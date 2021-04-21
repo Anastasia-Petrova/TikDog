@@ -10,6 +10,7 @@ import UIKit
 
 final class BreedCell: UITableViewCell {
     static let identifier = String(describing: BreedCell.self)
+    
     let title: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0

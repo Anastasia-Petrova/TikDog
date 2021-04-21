@@ -7,80 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C16150EC-F944-4E52-9D05-3D02CE27BA1A"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TikDog/BreedListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3CCF2FEE-6F79-4988-AE15-4457CFA42D0C"
+            uuid = "3AB81AA9-A228-4688-9337-0EDC49E6026F"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TikDog/DogAPIService.swift"
+            filePath = "TikDog/BreedPhotosViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
-            landmarkName = "get(request:session:decoder:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "3CCF2FEE-6F79-4988-AE15-4457CFA42D0C - 5d9634da09aaf3e4"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 ((data: Foundation.Data, response: __C.NSURLResponse)) throws -&gt; Foundation.Data in static TikDog.DogAPIService.get&lt;A where A: Swift.Decodable&gt;(request: Foundation.URLRequest, session: __C.NSURLSession, decoder: Foundation.JSONDecoder) -&gt; Combine.AnyPublisher&lt;Swift.Result&lt;A, TikDog.WebError&gt;, Swift.Never&gt;"
-                  moduleName = "TikDog"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/anastasiapetrova/Documents/Projects/TikDog/TikDog/DogAPIService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "56"
-                  endingLineNumber = "56"
-                  offsetFromSymbolStart = "609">
-               </Location>
-               <Location
-                  uuid = "3CCF2FEE-6F79-4988-AE15-4457CFA42D0C - 5d9634da09aaf3e4"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 ((data: Foundation.Data, response: __C.NSURLResponse)) throws -&gt; Foundation.Data in static TikDog.DogAPIService.get&lt;A where A: Swift.Decodable&gt;(request: Foundation.URLRequest, session: __C.NSURLSession, decoder: Foundation.JSONDecoder) -&gt; Combine.AnyPublisher&lt;Swift.Result&lt;A, TikDog.WebError&gt;, Swift.Never&gt;"
-                  moduleName = "TikDog"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/anastasiapetrova/Documents/Projects/TikDog/TikDog/DogAPIService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "56"
-                  endingLineNumber = "56"
-                  offsetFromSymbolStart = "627">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "FF38703B-A5B7-48E2-B984-72B17B7D69AE"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TikDog/BreedListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "init(coder:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -8,35 +8,38 @@
 import Combine
 import Foundation
 
-enum Endpoint {
-    case breedList
-    case breedPhotos(breedName: String, numberOfPhotos: UInt)
-    
-    var stringValue: String {
-        switch self {
-        case .breedList:
-            return "breeds/list/all"
-            
-        case let .breedPhotos(breedName, numberOfPhotos):
-            return "/breed/\(breedName)/images/random/\(numberOfPhotos)"
-        }
-    }
-}
-
-struct WebError: Decodable, Swift.Error {
-    let message: String
-    let code: Int
-}
-
 struct DogAPIService {
-    static let live = DogAPIService(baseURL: URL(string: "https://dog.ceo/api")!)
-    
-    let baseURL: URL
-    
-    func getRequest(for endpoint: Endpoint) -> URLRequest {
-        URLRequest(url: baseURL.appendingPathComponent(endpoint.stringValue))
+    let getBreedsList: () -> AnyPublisher<Result<BreedListResponse, WebError>, Never>
+    let getBreedPhotos: () -> AnyPublisher<Result<BreedPhotosResponse, WebError>, Never>
+}
+
+extension DogAPIService {
+    static func live(baseURL: URL) -> DogAPIService {
+        DogAPIService(
+            getBreedsList: {
+                get(request: Endpoint.breedList.getRequest(for: baseURL))
+            },
+            getBreedPhotos: {
+                get(request: Endpoint.breedPhotos(breedName: "String", numberOfPhotos: 10).getRequest(for: baseURL))
+            }
+        )
     }
     
+    static let mock = DogAPIService(
+        getBreedsList: {
+            Just(.success(BreedListResponse.mock))
+                .eraseToAnyPublisher()
+        },
+        getBreedPhotos: {
+            Just(.failure(WebError(
+                message: "Something went wrong. Try again.",
+                code: 400
+            ))).eraseToAnyPublisher()
+        }
+    )
+}
+
+extension DogAPIService {
     static func get<T: Decodable>(
         request: URLRequest,
         session: URLSession = .shared,
@@ -78,4 +81,25 @@ extension WebError {
     init(_ error: Swift.Error) {
         self.init(message: error.localizedDescription, code: 0)
     }
+}
+
+extension BreedListResponse {
+    static var mock: BreedListResponse = {
+        BreedListResponse(message: [
+            "affenpinscher": [],
+            "african": [],
+            "airedale": [],
+            "akita": [],
+            "appenzeller": [],
+            "australian": [
+                "shepherd"
+            ],
+        ]
+        )
+    }()
+}
+
+struct WebError: Decodable, Swift.Error {
+    let message: String
+    let code: Int
 }

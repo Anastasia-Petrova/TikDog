@@ -23,12 +23,14 @@ enum Endpoint {
     }
 }
 
-struct DogAPIService {
-    struct Error: Decodable, Swift.Error {
-        let message: String
-        let code: Int
-    }
+struct WebError: Decodable, Swift.Error {
+    let message: String
+    let code: Int
+}
 
+struct DogAPIService {
+    static let live = DogAPIService(baseURL: URL(string: "https://dog.ceo/api")!)
+    
     let baseURL: URL
     
     func getRequest(for endpoint: Endpoint) -> URLRequest {
@@ -39,12 +41,12 @@ struct DogAPIService {
         request: URLRequest,
         session: URLSession = .shared,
         decoder: JSONDecoder = JSONDecoder()
-    ) -> AnyPublisher<T, Error> {
+    ) -> AnyPublisher<Result<T, WebError>, Never> {
         session
             .dataTaskPublisher(for: request)
             .tryMap { output in
                 guard let response = output.response as? HTTPURLResponse else {
-                    throw Error(
+                    throw WebError(
                         message: "Something went wrong. Try again.",
                         code: 0
                     )
@@ -55,22 +57,24 @@ struct DogAPIService {
                     return output.data
                     
                 case 400...599:
-                    throw try decoder.decode(Error.self, from: output.data)
+                    throw try decoder.decode(WebError.self, from: output.data)
                     
                 default:
-                    throw Error(
+                    throw WebError(
                         message: "Something went wrong. Try again.",
                         code: response.statusCode
                     )
                 }
             }
             .decode(type: T.self, decoder: decoder)
-            .mapError(Error.init)
+            .mapError(WebError.init)
+            .map(Result.success)
+            .catch { Just(.failure($0)) }
             .eraseToAnyPublisher()
     }
 }
 
-extension DogAPIService.Error {
+extension WebError {
     init(_ error: Swift.Error) {
         self.init(message: error.localizedDescription, code: 0)
     }

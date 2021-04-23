@@ -31,10 +31,17 @@ extension DogAPIService {
                 .eraseToAnyPublisher()
         },
         getBreedPhotos: {
-            Just(.failure(WebError(
-                message: "Something went wrong. Try again.",
-                code: 400
-            ))).eraseToAnyPublisher()
+            Future { fulfill in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    fulfill(.success(.success(BreedPhotosResponse.mock)))
+                }
+            }.eraseToAnyPublisher()
+//            Just(.success(BreedPhotosResponse.mock))
+//                .eraseToAnyPublisher()
+//            Just(.failure(WebError(
+//                message: "Something went wrong. Try again.",
+//                code: 400
+//            ))).eraseToAnyPublisher()
         }
     )
 }
@@ -94,6 +101,39 @@ extension BreedListResponse {
             Breed(name: "australian", subBreeds: [Breed(name: "shepherd")])
         ])
     }()
+}
+
+extension BreedPhotosResponse {
+    static var mock: BreedPhotosResponse = {
+        BreedPhotosResponse(
+            photoURLs: [
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_13742.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3059.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3075.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_357.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3620.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3793.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3858.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_5150.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_5345.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3075.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_357.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3620.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3793.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3858.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_5150.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_5345.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_5345.jpg")!,
+                URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_8315.jpg")!
+            ]
+        )
+    }()
+}
+
+enum Loadable<Content> {
+    case failed(WebError)
+    case loaded(Content)
+    case loading
 }
 
 struct WebError: Decodable, Swift.Error {

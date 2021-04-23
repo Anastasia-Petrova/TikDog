@@ -9,9 +9,14 @@ import Combine
 import UIKit
 
 final class BreedPhotosViewController: UICollectionViewController {
-    let dataSource = BreedPhotosDataSource()
+    lazy var dataSource = BreedPhotosDataSource(
+        initialState: .loading,
+        collectionView: collectionView,
+        retryAction: fetchBreedPhotos
+    )
     let breed: Breed
     let getBreedPhotos: () -> AnyPublisher<Result<BreedPhotosResponse, WebError>, Never>
+    var subscription: AnyCancellable?
     
     init(
         breed: Breed,
@@ -31,111 +36,109 @@ final class BreedPhotosViewController: UICollectionViewController {
         super.viewDidLoad()
         collectionView.register(BreedPhotoCell.self, forCellWithReuseIdentifier: BreedPhotoCell.identifier)
         collectionView.dataSource = dataSource
+        fetchBreedPhotos()
+    }
+    
+    func fetchBreedPhotos() {
+        dataSource.state = .loading
+        subscription = getBreedPhotos()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak dataSource] result in
+                switch result {
+                case let .success(response):
+                    dataSource?.state = .loaded(response.photoURLs)
+                    
+                case let .failure(error):
+                    dataSource?.state = .failed(error)
+                }
+            }
     }
 }
 
 enum BreedPhotosCollectionLayout {
     static func make() -> UICollectionViewLayout {
         UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
-            let oneBasedIndex = sectionIndex + 1
-            if oneBasedIndex % 3 == 0 {
-                return makeBottomSectionLayout()
-            } else if oneBasedIndex % 2 == 0 {
-                return makeMiddleSectionLayout()
-            } else {
-                return makeTopSectionLayout()
-            }
+            Section(sectionIndex).layout
         }
-    }
-    
-    private static func makeTopSectionLayout() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
-        )
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0/3.0)
-            ),
-            subitems: [item]
-        )
-        return NSCollectionLayoutSection(group: group)
-    }
-    
-    private static func makeMiddleSectionLayout() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0/3.0)
-            )
-        )
-        let verticalGroup = NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0/3.0),
-                heightDimension: .fractionalHeight(1.0)
-            ),
-            subitem: item,
-            count: 2
-        )
-        let horizontalGroup = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0/3.0)
-            ),
-            subitem: verticalGroup,
-            count: 3
-        )
-        return NSCollectionLayoutSection(group: horizontalGroup)
-    }
-    
-    private static func makeBottomSectionLayout() -> NSCollectionLayoutSection {
-        let leadingItem = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(2.0/3.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
-        )
-        let trailingItem = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0/3.0)
-            )
-        )
-        let trailingGroup = NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0/3.0),
-                heightDimension: .fractionalHeight(1.0)
-            ),
-            subitem: trailingItem,
-            count: 2
-        )
-
-        let nestedGroup = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0/3.0)
-            ),
-            subitems: [leadingItem, trailingGroup]
-        )
-        return NSCollectionLayoutSection(group: nestedGroup)
     }
 }
 
 final class BreedPhotosDataSource: NSObject, UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+    var state: Loadable<[URL]> {
+        didSet {
+            collectionView.reloadData()
+        }
     }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let oneBasedIndex = section +  1
-        if oneBasedIndex % 3 == 0 {
-            return 3
-        } else if oneBasedIndex % 2 == 0 {
-            return 6
-        } else {
+    let retryAction: () -> Void
+    let collectionView: UICollectionView
+    
+    init(
+        initialState: Loadable<[URL]>,
+        collectionView: UICollectionView,
+        retryAction: @escaping () -> Void
+    ) {
+        self.state = initialState
+        self.retryAction = retryAction
+        self.collectionView = collectionView
+        super.init()
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        let numberOfElementsInFullPattern = 10
+        let numberOfSectionsInFullPattern = 3
+        switch state {
+        case .loading:
+            return numberOfSectionsInFullPattern
+            
+        case let .loaded(photoURLs):
+            let numberOfFullPatterns = photoURLs.count / numberOfElementsInFullPattern
+            let numberOfSectionsInPartialPattern: Int
+            switch photoURLs.count % numberOfElementsInFullPattern {
+            case 1:
+                numberOfSectionsInPartialPattern = 1
+            case 2...7:
+                numberOfSectionsInPartialPattern = 2
+            case 8...9:
+                numberOfSectionsInPartialPattern = numberOfSectionsInFullPattern
+            default:
+                numberOfSectionsInPartialPattern = 0
+            }
+            return (numberOfFullPatterns * numberOfSectionsInFullPattern) + numberOfSectionsInPartialPattern
+            
+        case .failed:
             return 1
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection sectionIndex: Int) -> Int {
+        let section = Section(sectionIndex)
+        
+        switch state {
+        case .loading:
+            return numberOfItemsIn(section: section)
+            
+        case let .loaded(photoURLs):
+            let numberOfSections = self.numberOfSections(in: collectionView)
+            if sectionIndex == numberOfSections - 1 {
+                let remainderInLastSection = photoURLs.count % 10
+                return numberOfItemsIn(section: section, totalNumberOfItems: remainderInLastSection)
+            } else {
+                return numberOfItemsIn(section: section)
+            }
+            
+        case .failed:
+            return 1
+        }
+    }
+    
+    func numberOfItemsIn(section: Section, totalNumberOfItems: Int = 10) -> Int {
+        switch section {
+        case .top:
+            return min(1, totalNumberOfItems)
+        case .middle:
+            return min(6, totalNumberOfItems - 1)
+        case .bottom:
+            return min(3, totalNumberOfItems - 7)
         }
     }
     
@@ -170,8 +173,102 @@ final class BreedPhotoCell: UICollectionViewCell {
     }
 }
 
-enum Loadable<Content> {
-    case failed(WebError)
-    case loaded(Content)
-    case loading
+enum Section: Int, CaseIterable {
+    case top = 1
+    case middle
+    case bottom
+    
+    init(_ index: Int) {
+        // Cycling over indexes of all sections.
+        // top, middle, bottom, top, middle, bottom etc.
+        self.init(rawValue: (abs(index) % AllCases().count) + 1)! //safe to force unwrap, because we are cycling over case indexes. Crash means a programmer mistake.
+    }
+    
+    var layout: NSCollectionLayoutSection {
+        switch self {
+        case .top:
+            return makeTopSectionLayout()
+            
+        case .middle:
+            return makeMiddleSectionLayout()
+            
+        case .bottom:
+            return makeBottomSectionLayout()
+        }
+    }
+    
+    private func makeTopSectionLayout() -> NSCollectionLayoutSection {
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0)
+            )
+        )
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0/3.0)
+            ),
+            subitems: [item]
+        )
+        return NSCollectionLayoutSection(group: group)
+    }
+    
+    private func makeMiddleSectionLayout() -> NSCollectionLayoutSection {
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0/3.0)
+            )
+        )
+        let verticalGroup = NSCollectionLayoutGroup.vertical(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0/3.0),
+                heightDimension: .fractionalHeight(1.0)
+            ),
+            subitem: item,
+            count: 2
+        )
+        let horizontalGroup = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0/3.0)
+            ),
+            subitem: verticalGroup,
+            count: 3
+        )
+        return NSCollectionLayoutSection(group: horizontalGroup)
+    }
+    
+    private func makeBottomSectionLayout() -> NSCollectionLayoutSection {
+        let leadingItem = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(2.0/3.0),
+                heightDimension: .fractionalHeight(1.0)
+            )
+        )
+        let trailingItem = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0/3.0)
+            )
+        )
+        let trailingGroup = NSCollectionLayoutGroup.vertical(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0/3.0),
+                heightDimension: .fractionalHeight(1.0)
+            ),
+            subitem: trailingItem,
+            count: 2
+        )
+
+        let nestedGroup = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0/3.0)
+            ),
+            subitems: [leadingItem, trailingGroup]
+        )
+        return NSCollectionLayoutSection(group: nestedGroup)
+    }
 }

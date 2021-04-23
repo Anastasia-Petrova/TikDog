@@ -62,14 +62,6 @@ final class BreedListViewController: UITableViewController {
     }
 }
 
-extension BreedListDataSource {
-//    enum State {
-//        case failed(WebError)
-//        case loaded([Breed])
-//        case loading
-//    }
-}
-
 final class BreedListDataSource: NSObject, UITableViewDataSource {
     var state: Loadable<[Breed]> {
         didSet {

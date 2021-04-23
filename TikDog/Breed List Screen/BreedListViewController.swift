@@ -9,7 +9,11 @@ import Combine
 import UIKit
 
 final class BreedListViewController: UITableViewController {
-    lazy var dataSource = BreedListDataSource(initialState: .loading, tableView: tableView, retryAction: fetchBreedList)
+    lazy var dataSource = BreedListDataSource(
+        initialState: .loading,
+        tableView: tableView,
+        retryAction: fetchBreedList
+    )
     var subscription: AnyCancellable?
     let breedListFetcher: () -> AnyPublisher<Result<BreedListResponse, WebError>, Never>
     let didSelectBreed: (Breed) -> Void
@@ -59,15 +63,15 @@ final class BreedListViewController: UITableViewController {
 }
 
 extension BreedListDataSource {
-    enum State {
-        case failed(WebError)
-        case loaded([Breed])
-        case loading
-    }
+//    enum State {
+//        case failed(WebError)
+//        case loaded([Breed])
+//        case loading
+//    }
 }
 
 final class BreedListDataSource: NSObject, UITableViewDataSource {
-    var state: BreedListDataSource.State {
+    var state: Loadable<[Breed]> {
         didSet {
             update()
         }
@@ -75,7 +79,11 @@ final class BreedListDataSource: NSObject, UITableViewDataSource {
     let retryAction: () -> Void
     let tableView: UITableView
     
-    init(initialState: BreedListDataSource.State, tableView: UITableView, retryAction: @escaping () -> Void) {
+    init(
+        initialState: Loadable<[Breed]>,
+        tableView: UITableView,
+        retryAction: @escaping () -> Void
+    ) {
         self.state = initialState
         self.retryAction = retryAction
         self.tableView = tableView

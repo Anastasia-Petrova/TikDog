@@ -85,17 +85,14 @@ extension WebError {
 
 extension BreedListResponse {
     static var mock: BreedListResponse = {
-        BreedListResponse(message: [
-            "affenpinscher": [],
-            "african": [],
-            "airedale": [],
-            "akita": [],
-            "appenzeller": [],
-            "australian": [
-                "shepherd"
-            ],
-        ]
-        )
+        BreedListResponse(breeds: [
+            Breed(name: "affenpinscher"),
+            Breed(name: "african"),
+            Breed(name: "airedale"),
+            Breed(name: "akita"),
+            Breed(name: "appenzeller"),
+            Breed(name: "australian", subBreeds: [Breed(name: "shepherd")])
+        ])
     }()
 }
 

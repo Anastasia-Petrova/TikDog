@@ -20,11 +20,19 @@ extension Breed {
     }
 }
 
-struct BreedListResponse: Decodable {
-    let message: Dictionary<String, [String]>
+struct BreedListResponse {
+    let breeds: [Breed]
+}
+
+extension BreedListResponse: Decodable {
+    private enum CodingKeys: String, CodingKey {
+        case message
+    }
     
-    var breeds: [Breed] {
-        message
+    init(from decoder: Decoder) throws {
+        breeds = try decoder
+            .container(keyedBy: CodingKeys.self)
+            .decode(Dictionary<String, [String]>.self, forKey: .message)
             .map { Breed(name: $0, subBreeds: $1.map(Breed.init)) }
             .sorted { $0.name < $1.name}
     }
@@ -37,4 +45,3 @@ struct BreedPhotosResponse: Decodable {
         case photoURLs = "message"
     }
 }
-

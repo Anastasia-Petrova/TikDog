@@ -9,10 +9,12 @@ import UIKit
 
 class App {
     let service: DogAPIService
+    let imageLoader: ImageLoader
     lazy var rootViewController = UINavigationController()
     
-    init(service: DogAPIService) {
+    init(service: DogAPIService, imageLoader: ImageLoader) {
         self.service = service
+        self.imageLoader = imageLoader
     }
     
     func start(in window: UIWindow) {
@@ -37,6 +39,6 @@ class App {
     }
     
     func makeBreedPhotosScreen(breed: Breed) -> UIViewController {
-        BreedPhotosViewController(breed: breed, getBreedPhotos: service.getBreedPhotos)
+        BreedPhotosViewController(breed: breed, getBreedPhotos: service.getBreedPhotos, loadImage: imageLoader.load)
     }
 }

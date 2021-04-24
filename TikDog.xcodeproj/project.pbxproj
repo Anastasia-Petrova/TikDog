@@ -23,6 +23,10 @@
 		6D404F3C2630E1E700ED67CF /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D404F3B2630E1E700ED67CF /* Breed.swift */; };
 		6D404F432630E24500ED67CF /* ErrorMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D404F422630E24500ED67CF /* ErrorMessageCell.swift */; };
 		6D404F4D2630E70B00ED67CF /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D404F4C2630E70B00ED67CF /* Endpoint.swift */; };
+		6D75EF96263393F9003D09F3 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D75EF95263393F9003D09F3 /* ImageLoader.swift */; };
+		6D75EF9B263398E6003D09F3 /* BreedPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D75EF9A263398E6003D09F3 /* BreedPhotoCell.swift */; };
+		6D75EFA0263398FE003D09F3 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D75EF9F263398FE003D09F3 /* Section.swift */; };
+		6D75EFA5263399C9003D09F3 /* BreedPhotosDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D75EFA4263399C9003D09F3 /* BreedPhotosDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +69,10 @@
 		6D404F3B2630E1E700ED67CF /* Breed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Breed.swift; sourceTree = "<group>"; };
 		6D404F422630E24500ED67CF /* ErrorMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessageCell.swift; sourceTree = "<group>"; };
 		6D404F4C2630E70B00ED67CF /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		6D75EF95263393F9003D09F3 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		6D75EF9A263398E6003D09F3 /* BreedPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotoCell.swift; sourceTree = "<group>"; };
+		6D75EF9F263398FE003D09F3 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
+		6D75EFA4263399C9003D09F3 /* BreedPhotosDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotosDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +178,9 @@
 			isa = PBXGroup;
 			children = (
 				6D26836C262F8152007591E2 /* BreedPhotosViewController.swift */,
+				6D75EFA4263399C9003D09F3 /* BreedPhotosDataSource.swift */,
+				6D75EF9A263398E6003D09F3 /* BreedPhotoCell.swift */,
+				6D75EF9F263398FE003D09F3 /* Section.swift */,
 			);
 			path = "Breed Photos Screen";
 			sourceTree = "<group>";
@@ -178,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				6D268362262F80C0007591E2 /* DogAPIService.swift */,
+				6D75EF95263393F9003D09F3 /* ImageLoader.swift */,
 				6D404F3B2630E1E700ED67CF /* Breed.swift */,
 				6D404F4C2630E70B00ED67CF /* Endpoint.swift */,
 			);
@@ -315,7 +327,10 @@
 			files = (
 				6D404F3C2630E1E700ED67CF /* Breed.swift in Sources */,
 				6D26832E262F7E35007591E2 /* BreedListViewController.swift in Sources */,
+				6D75EF96263393F9003D09F3 /* ImageLoader.swift in Sources */,
+				6D75EFA0263398FE003D09F3 /* Section.swift in Sources */,
 				6D26836D262F8152007591E2 /* BreedPhotosViewController.swift in Sources */,
+				6D75EFA5263399C9003D09F3 /* BreedPhotosDataSource.swift in Sources */,
 				6D404F2D2630A7D300ED67CF /* BreedCell.swift in Sources */,
 				6D26832A262F7E35007591E2 /* AppDelegate.swift in Sources */,
 				6D26832C262F7E35007591E2 /* SceneDelegate.swift in Sources */,
@@ -324,6 +339,7 @@
 				6D404F282630A7B800ED67CF /* BreedPlaceholderCell.swift in Sources */,
 				6D404F4D2630E70B00ED67CF /* Endpoint.swift in Sources */,
 				6D268363262F80C0007591E2 /* DogAPIService.swift in Sources */,
+				6D75EF9B263398E6003D09F3 /* BreedPhotoCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

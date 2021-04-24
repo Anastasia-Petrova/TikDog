@@ -82,6 +82,8 @@ extension DogAPIService {
             .catch { Just(.failure($0)) }
             .eraseToAnyPublisher()
     }
+    
+    
 }
 
 extension WebError {

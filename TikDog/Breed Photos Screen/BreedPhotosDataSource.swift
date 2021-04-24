@@ -165,46 +165,58 @@ struct Page {
         topSection.numberOfItems + (middleSection?.numberOfItems ?? 0) + (bottomSection?.numberOfItems ?? 0)
     }
     
-    subscript(indexPath: IndexPath) -> Item? {
+    subscript(indexPath: IndexPath) -> Se? {
         let sectionIndex = indexPath.section % 3
-        let rowIndex = indexPath.row
         switch sectionIndex {
         case 0:
-            guard rowIndex == 0 else { return nil }
-            return topSection.item
-            
+            return .top(topSection)
         case 1:
-            switch rowIndex {
-            case 0:
-                return middleSection?.leadingRow.top
-            case 1:
-                return middleSection?.leadingRow.bottom
-            case 2:
-                return middleSection?.centralRow?.top
-            case 3:
-                return middleSection?.centralRow?.bottom
-            case 4:
-                return middleSection?.trailingRow?.top
-            case 5:
-                return middleSection?.trailingRow?.bottom
-            default:
-                return nil
-            }
-            
+            return middleSection.map(Se.middle)
         case 3:
-            switch rowIndex {
-            case 0:
-                return bottomSection?.leadingItem
-            case 1:
-                return bottomSection?.trailingRow?.top
-            case 2:
-                return bottomSection?.trailingRow?.bottom
-            default:
-                return nil
-            }
-            
+            return bottomSection.map(Se.bottom)
         default:
             return nil
+        }
+    }
+    
+    subscript(indexPath: IndexPath) -> Item? {
+        guard let section: Se = self[indexPath] else { return nil }
+        let rowIndex = indexPath.row
+        
+        switch section {
+        case let .top(top):
+            guard rowIndex == 0 else { return nil }
+            return top.item
+            
+        case let .middle(middle):
+            switch rowIndex {
+            case 0:
+                return middle.leadingRow.top
+            case 1:
+                return middle.leadingRow.bottom
+            case 2:
+                return middle.centralRow?.top
+            case 3:
+                return middle.centralRow?.bottom
+            case 4:
+                return middle.trailingRow?.top
+            case 5:
+                return middle.trailingRow?.bottom
+            default:
+                return nil
+            }
+            
+        case let .bottom(bottom):
+            switch rowIndex {
+            case 0:
+                return bottom.leadingItem
+            case 1:
+                return bottom.trailingRow?.top
+            case 2:
+                return bottom.trailingRow?.bottom
+            default:
+                return nil
+            }
         }
     }
     
@@ -230,7 +242,7 @@ struct Page {
             }
         }
         
-        struct VerticalRow {
+        struct Row {
             let top: Item
             let bottom: Item?
             
@@ -258,9 +270,9 @@ struct Page {
         }
         
         struct Middle {
-            let leadingRow: VerticalRow
-            let centralRow: VerticalRow?
-            let trailingRow: VerticalRow?
+            let leadingRow: Row
+            let centralRow: Row?
+            let trailingRow: Row?
             
             var items: [Item] {
                 leadingRow.items + (centralRow?.items ?? []) + (trailingRow?.items ?? [])
@@ -272,7 +284,7 @@ struct Page {
         
         struct Bottom {
             let leadingItem: Item
-            let trailingRow: VerticalRow?
+            let trailingRow: Row?
             
             var items: [Item] {
                 [leadingItem] + (trailingRow?.items ?? [])

@@ -9,97 +9,10 @@ import Combine
 import Foundation
 import UIKit
 
-final class BreedPhotosDataSource: NSObject, UICollectionViewDataSource {
-    var state: Loadable<Page> {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
-    let loadImage: (URL) -> AnyPublisher<UIImage?, Never>
-    let retryAction: () -> Void
-    let collectionView: UICollectionView
-    var subscriptions = Set<AnyCancellable>()
-    
-    init(
-        initialState: Loadable<Page>,
-        collectionView: UICollectionView,
-        loadImage: @escaping (URL) -> AnyPublisher<UIImage?, Never>,
-        retryAction: @escaping () -> Void
-    ) {
-        self.state = initialState
-        self.loadImage = loadImage
-        self.retryAction = retryAction
-        self.collectionView = collectionView
-        super.init()
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        switch state {
-        case .loading,
-             .loaded:
-            return Page.numberOfSections
-            
-        case .failed:
-            return 1
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch state {
-        case .loading,
-             .loaded:
-            return Page.numberOfItems(in: section)
-            
-        case .failed:
-            return 1
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BreedPhotoCell.identifier, for: indexPath) as! BreedPhotoCell
-        
-        switch state {
-        case .loading:
-            cell.contentView.backgroundColor = .gray
-            return cell
-            
-        case let .loaded(page):
-            let item = page[indexPath]
-            if let image = item.image {
-                cell.imageView.image = image
-            } else {
-                let url = item.url
-                loadImage(url)
-                    .receive(on: DispatchQueue.main)
-                    .sink { [weak self] image in
-                        if let image = image {
-                            self?.setImage(image, indexPath: indexPath)
-                        }
-                    }
-                    .store(in: &subscriptions)
-            }
-            return cell
-            
-        case .failed:
-            return cell
-        }
-    }
-    
-    func setImage(_ image: UIImage, indexPath: IndexPath) {
-        switch state {
-        case var .loaded(page):
-            page[indexPath].image = image
-            state = .loaded(page)
-        default:
-            break
-        }
-    }
-}
-
 struct Page {
     var topSection: Section.Top
-    var middleSection: Section.Middle
-    var bottomSection: Section.Bottom
+    var middleSection: Section.Middle?
+    var bottomSection: Section.Bottom?
     
     static let numberOfSections = 3
     
@@ -135,35 +48,7 @@ struct Page {
         }
     }
     
-    subscript(sectionIndex: Int) -> Section {
-        switch sectionIndex {
-        case 0:
-            return .top(topSection)
-        case 1:
-            return .middle(middleSection)
-        case 2:
-            return .bottom(bottomSection)
-        default:
-            fatalError("Index out of range")
-        }
-    }
-    
-    subscript(url: URL) -> IndexPath? {
-        if topSection.item.url == url {
-            return IndexPath(item: 0, section: 0)
-            
-        } else if let index = middleSection.items.firstIndex(where: { $0.url == url }) {
-            return IndexPath(item: index, section: 1)
-            
-        } else if let index = bottomSection.items.firstIndex(where: { $0.url == url }) {
-            return IndexPath(item: index, section: 2)
-            
-        } else {
-            return nil
-        }
-    }
-    
-    subscript(indexPath: IndexPath) -> Item {
+    subscript(indexPath: IndexPath) -> Item? {
         get {
             let rowIndex = indexPath.row
             
@@ -175,17 +60,17 @@ struct Page {
             case 1:
                 switch rowIndex {
                 case 0:
-                    return middleSection.leadingColumn.top
+                    return middleSection?.leadingColumn.top
                 case 1:
-                    return middleSection.leadingColumn.bottom
+                    return middleSection?.leadingColumn.bottom
                 case 2:
-                    return middleSection.centralColumn.top
+                    return middleSection?.centralColumn?.top
                 case 3:
-                    return middleSection.centralColumn.bottom
+                    return middleSection?.centralColumn?.bottom
                 case 4:
-                    return middleSection.trailingColumn.top
+                    return middleSection?.trailingColumn?.top
                 case 5:
-                    return middleSection.trailingColumn.bottom
+                    return middleSection?.trailingColumn?.bottom
                 default:
                     fatalError("Index out of range")
                 }
@@ -193,11 +78,11 @@ struct Page {
             case 2:
                 switch rowIndex {
                 case 0:
-                    return bottomSection.leadingItem
+                    return bottomSection?.leadingItem
                 case 1:
-                    return bottomSection.trailingColumn.top
+                    return bottomSection?.trailingColumn?.top
                 case 2:
-                    return bottomSection.trailingColumn.bottom
+                    return bottomSection?.trailingColumn?.bottom
                 default:
                     fatalError("Index out of range")
                 }
@@ -206,6 +91,7 @@ struct Page {
             }
         }
         set {
+            guard let newValue = newValue else { return }
             let rowIndex = indexPath.row
             
             switch indexPath.section {
@@ -216,17 +102,17 @@ struct Page {
             case 1:
                 switch rowIndex {
                 case 0:
-                    middleSection.leadingColumn.top = newValue
+                    middleSection?.leadingColumn.top = newValue
                 case 1:
-                    middleSection.leadingColumn.bottom = newValue
+                    middleSection?.leadingColumn.bottom = newValue
                 case 2:
-                    middleSection.centralColumn.top = newValue
+                    middleSection?.centralColumn?.top = newValue
                 case 3:
-                    middleSection.centralColumn.bottom = newValue
+                    middleSection?.centralColumn?.bottom = newValue
                 case 4:
-                    middleSection.trailingColumn.top = newValue
+                    middleSection?.trailingColumn?.top = newValue
                 case 5:
-                    middleSection.trailingColumn.bottom = newValue
+                    middleSection?.trailingColumn?.bottom = newValue
                 default:
                     fatalError("Index out of range")
                 }
@@ -234,11 +120,11 @@ struct Page {
             case 2:
                 switch rowIndex {
                 case 0:
-                    bottomSection.leadingItem = newValue
+                    bottomSection?.leadingItem = newValue
                 case 1:
-                    bottomSection.trailingColumn.top = newValue
+                    bottomSection?.trailingColumn?.top = newValue
                 case 2:
-                    bottomSection.trailingColumn.bottom = newValue
+                    bottomSection?.trailingColumn?.bottom = newValue
                 default:
                     fatalError("Index out of range")
                 }
@@ -249,7 +135,7 @@ struct Page {
     }
     
     var items: [Item] {
-        [topSection.item] + middleSection.items + bottomSection.items
+        [topSection.item] + (middleSection?.items ?? []) + (bottomSection?.items ?? [])
     }
     
     enum Section: Hashable {
@@ -272,10 +158,10 @@ struct Page {
         
         struct Column: Hashable {
             var top: Item
-            var bottom: Item
+            var bottom: Item?
             
             var items: [Item] {
-                [top, bottom]
+                [top, bottom].compactMap { $0 }
             }
 
             subscript(index: Int) -> Item? {
@@ -299,11 +185,11 @@ struct Page {
         
         struct Middle: Hashable {
             var leadingColumn: Column
-            var centralColumn: Column
-            var trailingColumn: Column
+            var centralColumn: Column?
+            var trailingColumn: Column?
             
             var items: [Item] {
-                leadingColumn.items + centralColumn.items + trailingColumn.items
+                leadingColumn.items + (centralColumn?.items ?? []) + (trailingColumn?.items ?? [])
             }
             var numberOfItems: Int { items.count }
             
@@ -312,10 +198,10 @@ struct Page {
         
         struct Bottom: Hashable {
             var leadingItem: Item
-            var trailingColumn: Column
+            var trailingColumn: Column?
             
             var items: [Item] {
-                [leadingItem] + trailingColumn.items
+                [leadingItem] + (trailingColumn?.items ?? [])
             }
             
             var numberOfItems: Int { items.count }
@@ -410,6 +296,12 @@ extension Page.Section.Bottom: SectionLayout {
     }
 }
 
+extension Array {
+    subscript(maybe index: Int) -> Element? {
+        guard index < count else { return nil }
+        return self[index]
+    }
+}
 
 extension Page: Decodable {
     private enum CodingKeys: String, CodingKey {
@@ -419,22 +311,45 @@ extension Page: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let urls = try container.decode([URL].self, forKey: .message)
-        guard urls.count == 10 else {
+        
+        guard urls.count > 0 else {
             throw DecodingError.typeMismatch(
                 Page.self,
-                DecodingError.Context(codingPath: [], debugDescription: "Expected to get exactly 10 URLs")
+                DecodingError.Context(codingPath: [], debugDescription: "Expected to get at least one URL")
             )
         }
         topSection = Section.Top(item: Item(url: urls[0]))
-        middleSection = Section.Middle(
-            leadingColumn: Section.Column(top: Item(url: urls[1]), bottom: Item(url: urls[2])),
-            centralColumn: Section.Column(top: Item(url: urls[3]), bottom: Item(url: urls[4])),
-            trailingColumn: Section.Column(top: Item(url: urls[5]), bottom: Item(url: urls[6]))
-        )
-        bottomSection = Section.Bottom(
-            leadingItem: Item(url: urls[7]),
-            trailingColumn: Section.Column(top: Item(url: urls[8]), bottom: Item(url: urls[9]))
-        )
+        middleSection = urls[maybe: 1].map { url in
+            Section.Middle(
+                leadingColumn: Section.Column(
+                    top: Item(url: url),
+                    bottom: urls[maybe: 2].map(Item.init)
+                ),
+                centralColumn: urls[maybe: 3].map { url in
+                    Section.Column(
+                        top: Item(url: url),
+                        bottom: urls[maybe: 4].map(Item.init)
+                    )
+                },
+                trailingColumn: urls[maybe: 5].map { url in
+                    Section.Column(
+                        top: Item(url: url),
+                        bottom: urls[maybe: 6].map(Item.init)
+                    )
+                }
+            )
+        }
+        bottomSection = urls[maybe: 7].map { url in
+            Section.Bottom(
+                leadingItem: Item(url: url),
+                trailingColumn: urls[maybe: 8].map { url in
+                    Section.Column(
+                        top: Item(url: url),
+                        bottom: urls[maybe: 9].map(Item.init)
+                    )
+                }
+            )
+        }
     }
 }
 

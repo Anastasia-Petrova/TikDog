@@ -16,8 +16,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: scene)
-//        let app = App(service: .live(baseURL: URL(string: "https://dog.ceo/api")!), imageLoader: .live)
-        let app = App(service: .mock, imageLoader: .live)
+        let app = App(service: .live(baseURL: URL(string: "https://dog.ceo/api")!), imageLoader: .live)
+//        let app = App(service: .mock, imageLoader: .live)
         app.start(in: window)
         
         self.app = app

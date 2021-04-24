@@ -9,15 +9,15 @@ import Foundation
 
 enum Endpoint {
     case breedList
-    case breedPhotos(breedName: String, numberOfPhotos: UInt)
+    case breedPhotos(breedName: String)
     
     var stringValue: String {
         switch self {
         case .breedList:
             return "breeds/list/all"
             
-        case let .breedPhotos(breedName, numberOfPhotos):
-            return "/breed/\(breedName)/images/random/\(numberOfPhotos)"
+        case let .breedPhotos(breedName):
+            return "/breed/\(breedName)/images/random/10"
         }
     }
     

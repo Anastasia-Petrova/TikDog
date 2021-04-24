@@ -65,7 +65,6 @@ final class BreedPhotosDataSource: NSObject, UICollectionViewDataSource {
             
         case let .loaded(page):
             let item = page[indexPath]
-            cell.title.text = String(indexPath.row)
             if let image = item.image {
                 cell.imageView.image = image
             } else {
@@ -253,7 +252,7 @@ struct Page {
         [topSection.item] + middleSection.items + bottomSection.items
     }
     
-    enum Section {
+    enum Section: Hashable {
         case top(Top)
         case middle(Middle)
         case bottom(Bottom)
@@ -271,39 +270,14 @@ struct Page {
             }
         }
         
-        struct Column {
+        struct Column: Hashable {
             var top: Item
             var bottom: Item
             
             var items: [Item] {
                 [top, bottom]
             }
-            
-            subscript(url: URL) -> Item? {
-                get {
-                    switch url {
-                    case top.url:
-                        return top
-                    case bottom.url:
-                        return bottom
-                    default:
-                        return nil
-                    }
-                }
-                set {
-                    guard let newItem = newValue else { return }
-                    
-                    switch url {
-                    case top.url:
-                        top = newItem
-                    case bottom.url:
-                        bottom = newItem
-                    default:
-                        break
-                    }
-                }
-            }
-            
+
             subscript(index: Int) -> Item? {
                 switch index {
                 case 0:
@@ -316,14 +290,14 @@ struct Page {
             }
         }
         
-        struct Top {
+        struct Top: Hashable {
             var item: Item
             var numberOfItems: Int { 1 }
             
             static let numberOfItems = 1
         }
         
-        struct Middle {
+        struct Middle: Hashable {
             var leadingColumn: Column
             var centralColumn: Column
             var trailingColumn: Column
@@ -334,19 +308,9 @@ struct Page {
             var numberOfItems: Int { items.count }
             
             static let numberOfItems: Int = 6
-            
-            subscript(url: URL) -> Item? {
-                get {
-                    leadingColumn[url] ?? centralColumn[url] ?? trailingColumn[url]
-                }
-                set {
-                    guard let newItem = newValue else { return }
-                    
-                }
-            }
         }
         
-        struct Bottom {
+        struct Bottom: Hashable {
             var leadingItem: Item
             var trailingColumn: Column
             
@@ -449,16 +413,16 @@ extension Page.Section.Bottom: SectionLayout {
 
 extension Page: Decodable {
     private enum CodingKeys: String, CodingKey {
-        case photoURLs = "message"
+        case message
     }
     
     init(from decoder: Decoder) throws {
-        var container = try decoder.unkeyedContainer()
-        let urls = try container.decode([URL].self)
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let urls = try container.decode([URL].self, forKey: .message)
         guard urls.count == 10 else {
             throw DecodingError.typeMismatch(
                 Page.self,
-                DecodingError.Context(codingPath: [], debugDescription: "Expected to get exactly ten URLs")
+                DecodingError.Context(codingPath: [], debugDescription: "Expected to get exactly 10 URLs")
             )
         }
         topSection = Section.Top(item: Item(url: urls[0]))
@@ -471,5 +435,15 @@ extension Page: Decodable {
             leadingItem: Item(url: urls[7]),
             trailingColumn: Section.Column(top: Item(url: urls[8]), bottom: Item(url: urls[9]))
         )
+    }
+}
+
+struct Item: Hashable {
+    let url: URL
+    var image: UIImage?
+    
+    init(url: URL) {
+        self.url = url
+        image = nil
     }
 }

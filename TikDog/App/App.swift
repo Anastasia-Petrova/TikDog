@@ -39,6 +39,6 @@ class App {
     }
     
     func makeBreedPhotosScreen(breed: Breed) -> UIViewController {
-        BreedPhotosViewController(breed: breed, getBreedPhotos: service.getBreedPhotos, loadImage: imageLoader.load)
+        BreedPhotosViewController(breed: breed, getBreedPhotos: { self.service.getBreedPhotos(breed) }, loadImage: imageLoader.load)
     }
 }

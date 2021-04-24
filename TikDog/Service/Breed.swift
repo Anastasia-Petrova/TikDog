@@ -39,49 +39,23 @@ extension BreedListResponse: Decodable {
 }
 
 struct BreedPhotosResponse: Decodable {
-    let page: Page
+    var page: Page//{ Page(photoURLs)! }
+//    let photoURLs: [URL]
     
     private enum CodingKeys: String, CodingKey {
-        case page = "message"
+        case message
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        page = try Page.init(from: decoder)
+//        page = try container.decode(Page.self, forKey: .message)
     }
 }
 
-////Type safe array of ten elements.
-//struct Ten<Element: Decodable>: Decodable {
-//    let one: Element
-//    let two: Element
-//    let three: Element
-//    let four: Element
-//    let five: Element
-//    let six: Element
-//    let seven: Element
-//    let eight: Element
-//    let nine: Element
-//    let ten: Element
-//
-//    init(from decoder: Decoder) throws {
-//        var container = try decoder.unkeyedContainer()
-//        let arrayValue = try container.decode([Element].self)
-//        guard arrayValue.count == 10 else {
-//            throw DecodingError.typeMismatch(
-//                Ten<Element>.self,
-//                DecodingError.Context(codingPath: [], debugDescription: "Expected to get array of ten elements")
-//            )
-//        }
-//
-//        one = arrayValue[0]
-//        two = arrayValue[1]
-//        three = arrayValue[2]
-//        four = arrayValue[3]
-//        five = arrayValue[4]
-//        six = arrayValue[5]
-//        seven = arrayValue[6]
-//        eight = arrayValue[7]
-//        nine = arrayValue[8]
-//        ten = arrayValue[9]
-//    }
-//
-//    var arrayValue: [Element] {
-//        [one, two, three, four, five, six, seven, eight, nine, ten]
-//    }
-//}
+extension BreedPhotosResponse {
+    init(page: Page) {
+        self.page = page
+//        photoURLs = page.items.map(\.url)
+    }
+}

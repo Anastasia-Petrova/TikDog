@@ -28,7 +28,7 @@ final class BreedPhotosViewController: UICollectionViewController {
         self.breed = breed
         self.getBreedPhotos = getBreedPhotos
         self.loadImage = loadImage
-        super.init(collectionViewLayout: Self.makeCollectionLayout())
+        super.init(collectionViewLayout: Page.layout)
         view.backgroundColor = .red
     }
     
@@ -50,18 +50,12 @@ final class BreedPhotosViewController: UICollectionViewController {
             .sink { [weak dataSource] result in
                 switch result {
                 case let .success(response):
-                    dataSource?.state = .loaded(response.photoURLs.map(Item.init))
+                    dataSource?.state = .loaded(response.page)
                     
                 case let .failure(error):
                     dataSource?.state = .failed(error)
                 }
             }
-    }
-    
-    static func makeCollectionLayout() -> UICollectionViewLayout {
-        UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
-            Section(sectionIndex).layout
-        }
     }
 }
 

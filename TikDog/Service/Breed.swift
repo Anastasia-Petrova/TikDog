@@ -39,10 +39,10 @@ extension BreedListResponse: Decodable {
 }
 
 struct BreedPhotosResponse: Decodable {
-    let photoURLs: [URL]
+    let page: Page
     
     private enum CodingKeys: String, CodingKey {
-        case photoURLs = "message"
+        case page = "message"
     }
 }
 

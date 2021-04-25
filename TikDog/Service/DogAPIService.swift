@@ -9,8 +9,8 @@ import Combine
 import Foundation
 
 struct DogAPIService {
-    let getBreedsList: () -> AnyPublisher<Result<BreedListResponse, WebError>, Never>
-    let getBreedPhotos: (Breed) -> AnyPublisher<Result<Page, WebError>, Never>
+    var getBreedsList: () -> AnyPublisher<Result<BreedListResponse, WebError>, Never>
+    var getBreedPhotos: (Breed) -> AnyPublisher<Result<Page, WebError>, Never>
 }
 
 extension DogAPIService {
@@ -25,7 +25,7 @@ extension DogAPIService {
         )
     }
     
-    static let mock = DogAPIService(
+    static let mockSuccess = DogAPIService(
         getBreedsList: {
             Just(.success(BreedListResponse.mock))
                 .eraseToAnyPublisher()
@@ -36,12 +36,21 @@ extension DogAPIService {
                     fulfill(.success(.success(Page.mock)))
 //                }
             }.eraseToAnyPublisher()
-//            Just(.success(BreedPhotosResponse.mock))
-//                .eraseToAnyPublisher()
-//            Just(.failure(WebError(
-//                message: "Something went wrong. Try again.",
-//                code: 400
-//            ))).eraseToAnyPublisher()
+        }
+    )
+    
+    static let mockFailure = DogAPIService(
+        getBreedsList: {
+            Just(.failure(WebError(
+                message: "Something went wrong. Try again.",
+                code: 400
+            ))).eraseToAnyPublisher()
+        },
+        getBreedPhotos: { _ in
+            Just(.failure(WebError(
+                message: "Something went wrong. Try again.",
+                code: 400
+            ))).eraseToAnyPublisher()
         }
     )
 }
@@ -54,7 +63,7 @@ extension DogAPIService {
     ) -> AnyPublisher<Result<T, WebError>, Never> {
         session
             .dataTaskPublisher(for: request)
-            .delay(for: 4, scheduler: DispatchQueue.main)
+//            .delay(for: 4, scheduler: DispatchQueue.main)
             .tryMap { output in
                 guard let response = output.response as? HTTPURLResponse else {
                     throw WebError(

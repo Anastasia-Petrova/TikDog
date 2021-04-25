@@ -12,7 +12,7 @@ final class BreedPhotosDataSource: UICollectionViewDiffableDataSource<BreedPhoto
     }
     let getBreedPhotos: () -> AnyPublisher<Result<Photos, WebError>, Never>
     let collectionView: UICollectionView
-    var subscription: AnyCancellable?
+    var photosRequestSubscription: AnyCancellable?
     
     init(
         collectionView: UICollectionView,
@@ -102,19 +102,15 @@ final class BreedPhotosDataSource: UICollectionViewDiffableDataSource<BreedPhoto
                 (0..<count).map { _ in Row.placeholder(UUID()) }
             }
             snapshot.appendSections(Section.allCases)
-            snapshot.appendItems(makePlaceholders(count: PhotosPage.Section.Top.numberOfItems), toSection: Section.top)
-            snapshot.appendItems(makePlaceholders(count: PhotosPage.Section.Middle.numberOfItems), toSection: Section.middle)
-            snapshot.appendItems(makePlaceholders(count: PhotosPage.Section.Bottom.numberOfItems), toSection: Section.bottom)
+            snapshot.appendItems(makePlaceholders(count: Photos.Section.top.numberOfItems), toSection: Section.top)
+            snapshot.appendItems(makePlaceholders(count: Photos.Section.middle.numberOfItems), toSection: Section.middle)
+            snapshot.appendItems(makePlaceholders(count: Photos.Section.bottom.numberOfItems), toSection: Section.bottom)
             
         case let .loaded(page):
             snapshot.appendSections(Section.allCases)
             snapshot.appendItems([BreedPhotosViewController.Row.item(page.topItem)], toSection: Section.top)
             snapshot.appendItems(page.middleSection.map(Row.item), toSection: Section.middle)
             snapshot.appendItems(page.bottomSection.map(Row.item), toSection: Section.bottom)
-            
-//            snapshot.appendItems([BreedPhotosViewController.Row.item(page.topSection.item)], toSection: Section.top)
-//            snapshot.appendItems(page.middleSection?.items.map(Row.item) ?? [], toSection: Section.middle)
-//            snapshot.appendItems(page.bottomSection?.items.map(Row.item) ?? [], toSection: Section.bottom)
             
         case let .failed(error):
             snapshot.appendSections([Section.top])
@@ -125,7 +121,7 @@ final class BreedPhotosDataSource: UICollectionViewDiffableDataSource<BreedPhoto
     
     func fetch() {
         state = .loading
-        subscription = getBreedPhotos()
+        photosRequestSubscription = getBreedPhotos()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 switch result {
@@ -149,49 +145,14 @@ final class BreedPhotosDataSource: UICollectionViewDiffableDataSource<BreedPhoto
 }
 
 struct Photos {
-    var topItem: Item
-    var middleSection: [Item]
-    var bottomSection: [Item]
-    
-    static let numberOfItemsInTopSecton = 1
-    static let numberOfItemsInMiddleSecton = 6
-    static let numberOfItemsInBottomSecton = 3
-    
-    subscript(indexPath: IndexPath) -> Item {
-        get {
-            switch (indexPath.section, indexPath.row) {
-            case (0, 0..<Self.numberOfItemsInTopSecton):
-                return topItem
-                
-            case (1, 0..<Self.numberOfItemsInMiddleSecton):
-                return middleSection[indexPath.row]
-                
-            case (2, 0..<Self.numberOfItemsInBottomSecton):
-                return bottomSection[indexPath.row]
-                
-            default:
-                fatalError("Index out of range")
-            }
-        }
-        set {
-            switch (indexPath.section, indexPath.row) {
-            case (0, 0..<Self.numberOfItemsInTopSecton):
-                topItem = newValue
-                
-            case (1, 0..<Self.numberOfItemsInMiddleSecton):
-                
-                middleSection[indexPath.row] = newValue
-            case (2, 0..<Self.numberOfItemsInBottomSecton):
-                bottomSection[indexPath.row] = newValue
-                
-            default:
-                fatalError("Index out of range")
-            }
-        }
-    }
+    var topItem: PhotoItem
+    var middleSection: [PhotoItem]
+    var bottomSection: [PhotoItem]
 }
 
 extension Photos: Decodable {
+    typealias Section = BreedPhotosViewController.Section
+    
     private enum CodingKeys: String, CodingKey {
         case message
     }
@@ -202,22 +163,63 @@ extension Photos: Decodable {
         
         guard let firstURL = urls.first else {
             throw DecodingError.typeMismatch(
-                PhotosPage.self,
+                Photos.self,
                 DecodingError.Context(codingPath: [], debugDescription: "Expected to get at least one URL")
             )
         }
-        topItem = Item(url: firstURL)
+        topItem = PhotoItem(url: firstURL)
         middleSection = []
         bottomSection = []
+        
+        let middleSectionLowerBound = Section.top.numberOfItems
+        let middleSectionUpperBound = Section.middle.numberOfItems
+        let bottomSectionLowerBound = Section.top.numberOfItems + Section.middle.numberOfItems
+        let bottomSectionUpperBound = Section.middle.numberOfItems + Section.bottom.numberOfItems
         for (index, url) in urls.enumerated() {
             switch index {
-            case (1...6):
-                middleSection.append(Item(url: url))
+            case (middleSectionLowerBound...middleSectionUpperBound):
+                middleSection.append(PhotoItem(url: url))
                 
-            case (7...10):
-                bottomSection.append(Item(url: url))
+            case (bottomSectionLowerBound...bottomSectionUpperBound):
+                bottomSection.append(PhotoItem(url: url))
+                
             default:
                 break
+            }
+        }
+    }
+}
+
+extension Photos {
+    subscript(indexPath: IndexPath) -> PhotoItem {
+        get {
+            switch (indexPath.section, indexPath.row) {
+            case (Section.top.index, 0..<Section.top.numberOfItems):
+                return topItem
+                
+            case (Section.middle.index, 0..<Section.middle.numberOfItems):
+                return middleSection[indexPath.row]
+                
+            case (Section.bottom.index, 0..<Section.bottom.numberOfItems):
+                return bottomSection[indexPath.row]
+                
+            default:
+                fatalError("Index out of range")
+            }
+        }
+        set {
+            switch (indexPath.section, indexPath.row) {
+            case (Section.top.index, 0..<Section.top.numberOfItems):
+                topItem = newValue
+                
+            case (Section.middle.index, 0..<Section.middle.numberOfItems):
+                middleSection[indexPath.row] = newValue
+                
+            case (Section.bottom.index, 0..<Section.bottom.numberOfItems):
+                bottomSection[indexPath.row] = newValue
+                
+            default:
+                fatalError("Index out of range")
             }
         }
     }

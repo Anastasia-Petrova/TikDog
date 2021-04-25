@@ -14,11 +14,10 @@ extension WebService {
             Just(.success(BreedListResponse.mock))
                 .eraseToAnyPublisher()
         },
-        getBreedPhotos: { _ in genericError() }
-//        getBreedPhotos: { _ in
-//            Just(.success(PhotosPage.mock))
-//                .eraseToAnyPublisher()
-//        }
+        getBreedPhotos: { _ in
+            Just(.success(Photos.mock))
+                .eraseToAnyPublisher()
+        }
     )
     
     static let mockFailure = WebService(
@@ -47,62 +46,54 @@ extension BreedListResponse {
     }()
 }
 
-extension PhotosPage {
-    static var mock: PhotosPage = {
-        PhotosPage(
-            topSection: .init(item: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_13742.jpg")!)),
-            middleSection: .init(
-                leadingColumn: .init(
-                    top: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3059.jpg")!),
-                    bottom: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3075.jpg")!)
-                ),
-                centralColumn: .init(
-                    top: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_357.jpg")!),
-                    bottom: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3620.jpg")!)
-                ),
-                trailingColumn: .init(
-                    top: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3793.jpg")!),
-                    bottom: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3858.jpg")!)
-                )
-            ),
-            bottomSection: .init(
-                leadingItem: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_5150.jpg")!),
-                trailingColumn: .init(
-                    top: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_5345.jpg")!),
-                    bottom: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_8315.jpg")!)
-                )
-            )
-        )
+extension Photos {
+    static var mock: Photos = {
+        Photos(
+            topItem: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_13742.jpg")!),
+            middleSection: [
+                .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3059.jpg")!),
+                .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3075.jpg")!),
+                
+                .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_357.jpg")!),
+                .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3620.jpg")!),
+                .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3793.jpg")!),
+                .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3858.jpg")!),
+            ],
+            bottomSection: [
+                .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_5150.jpg")!),
+                .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_5345.jpg")!),
+                .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_8315.jpg")!)
+            ])
     }()
 }
 
-extension BreedPhotosResponse {
-    static var mock: BreedPhotosResponse = {
-        BreedPhotosResponse(
-            page: PhotosPage(
-                topSection: .init(item: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_13742.jpg")!)),
-                middleSection: .init(
-                    leadingColumn: .init(
-                        top: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3059.jpg")!),
-                        bottom: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3075.jpg")!)
-                    ),
-                    centralColumn: .init(
-                        top: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_357.jpg")!),
-                        bottom: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3620.jpg")!)
-                    ),
-                    trailingColumn: .init(
-                        top: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3793.jpg")!),
-                        bottom: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3858.jpg")!)
-                    )
-                ),
-                bottomSection: .init(
-                    leadingItem: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_5150.jpg")!),
-                    trailingColumn: .init(
-                        top: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_5345.jpg")!),
-                        bottom: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_8315.jpg")!)
-                    )
-                )
-            )
-        )
-    }()
-}
+//extension BreedPhotosResponse {
+//    static var mock: BreedPhotosResponse = {
+//        BreedPhotosResponse(
+//            page: PhotosPage(
+//                topSection: .init(item: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_13742.jpg")!)),
+//                middleSection: .init(
+//                    leadingColumn: .init(
+//                        top: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3059.jpg")!),
+//                        bottom: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3075.jpg")!)
+//                    ),
+//                    centralColumn: .init(
+//                        top: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_357.jpg")!),
+//                        bottom: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3620.jpg")!)
+//                    ),
+//                    trailingColumn: .init(
+//                        top: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3793.jpg")!),
+//                        bottom: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3858.jpg")!)
+//                    )
+//                ),
+//                bottomSection: .init(
+//                    leadingItem: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_5150.jpg")!),
+//                    trailingColumn: .init(
+//                        top: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_5345.jpg")!),
+//                        bottom: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_8315.jpg")!)
+//                    )
+//                )
+//            )
+//        )
+//    }()
+//}

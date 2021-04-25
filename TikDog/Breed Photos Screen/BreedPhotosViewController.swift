@@ -26,7 +26,7 @@ final class BreedPhotosViewController: UICollectionViewController {
     ) {
         self.breedPhotosPublisher = breedPhotosPublisher
         self.loadImage = loadImage
-        super.init(collectionViewLayout: PhotosPage.layout)
+        super.init(collectionViewLayout: Self.collectionLayout)
     }
     
     required init?(coder: NSCoder) {
@@ -69,15 +69,25 @@ final class BreedPhotosViewController: UICollectionViewController {
 }
 
 extension BreedPhotosViewController {
-    enum Section: Hashable, CaseIterable {
+    enum Section: Int, Hashable, CaseIterable {
         case top
         case middle
         case bottom
+        
+        var index: Int { rawValue }
+        
+        var numberOfItems: Int {
+            switch self {
+            case .top: return 1
+            case .middle: return 6
+            case .bottom: return 3
+            }
+        }
     }
     
     enum Row: Hashable {
         case error(String)
-        case item(Item)
+        case item(PhotoItem)
         case placeholder(UUID)
     }
 }

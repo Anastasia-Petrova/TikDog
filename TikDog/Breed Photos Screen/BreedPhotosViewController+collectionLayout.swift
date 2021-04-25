@@ -1,38 +1,30 @@
 //
-//  Section.swift
+//  Page+collectionLayout.swift
 //  TikDog
 //
-//  Created by Anastasia Petrova on 24/04/2021.
+//  Created by Anastasia Petrova on 25/04/2021.
 //
 
 import Foundation
 import UIKit
 
-enum Section: Int, CaseIterable {
-    case top = 1
-    case middle
-    case bottom
-    
-    init(_ index: Int) {
-        // Cycling over indexes of all sections.
-        // top, middle, bottom, top, middle, bottom etc.
-        self.init(rawValue: (abs(index) % Self.allCases.count) + 1)! //safe to force unwrap, because we are cycling over case indexes. Crash means a programmer mistake.
-    }
-    
-    var layout: NSCollectionLayoutSection {
-        switch self {
-        case .top:
-            return makeTopSectionLayout()
-            
-        case .middle:
-            return makeMiddleSectionLayout()
-            
-        case .bottom:
-            return makeBottomSectionLayout()
+extension BreedPhotosViewController {
+    static var collectionLayout: UICollectionViewLayout {
+        UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
+            switch sectionIndex {
+            case 0:
+                return topSectionLayout
+            case 1:
+                return middleSectionLayout
+            case 2:
+                return bottomSectionLayout
+            default:
+                return nil
+            }
         }
     }
-    
-    private func makeTopSectionLayout() -> NSCollectionLayoutSection {
+
+    private static var topSectionLayout: NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
@@ -49,7 +41,7 @@ enum Section: Int, CaseIterable {
         return NSCollectionLayoutSection(group: group)
     }
     
-    private func makeMiddleSectionLayout() -> NSCollectionLayoutSection {
+    private static var middleSectionLayout: NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
@@ -74,8 +66,8 @@ enum Section: Int, CaseIterable {
         )
         return NSCollectionLayoutSection(group: horizontalGroup)
     }
-    
-    private func makeBottomSectionLayout() -> NSCollectionLayoutSection {
+
+    private static var bottomSectionLayout: NSCollectionLayoutSection {
         let leadingItem = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(2.0/3.0),

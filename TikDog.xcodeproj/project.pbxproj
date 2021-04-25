@@ -134,11 +134,11 @@
 			isa = PBXGroup;
 			children = (
 				6D404F402630E20C00ED67CF /* App */,
+				6D404F482630E28000ED67CF /* Services */,
+				6D9163DF2635D4CF00A957F3 /* Shared Models */,
+				6D9163D62635D47200A957F3 /* Shared Views */,
 				6D404F412630E21E00ED67CF /* Breed List Screen */,
 				6D404F472630E26600ED67CF /* Breed Photos Screen */,
-				6D9163DF2635D4CF00A957F3 /* Model */,
-				6D404F482630E28000ED67CF /* Services */,
-				6D9163D62635D47200A957F3 /* Shared Views */,
 				6D268332262F7E35007591E2 /* Assets.xcassets */,
 				6D268337262F7E35007591E2 /* Info.plist */,
 				6D268334262F7E35007591E2 /* LaunchScreen.storyboard */,
@@ -192,7 +192,6 @@
 				6D75EFA4263399C9003D09F3 /* BreedPhotosDataSource.swift */,
 				6D26836C262F8152007591E2 /* BreedPhotosViewController.swift */,
 				6D9163C02635CB9000A957F3 /* BreedPhotosViewController+collectionLayout.swift */,
-				6DA918622635E2FA00810234 /* PhotoItem.swift */,
 			);
 			path = "Breed Photos Screen";
 			sourceTree = "<group>";
@@ -234,13 +233,14 @@
 			path = "Shared Views";
 			sourceTree = "<group>";
 		};
-		6D9163DF2635D4CF00A957F3 /* Model */ = {
+		6D9163DF2635D4CF00A957F3 /* Shared Models */ = {
 			isa = PBXGroup;
 			children = (
 				6D404F3B2630E1E700ED67CF /* Breed.swift */,
 				6D9163E02635D4EB00A957F3 /* Loadable.swift */,
+				6DA918622635E2FA00810234 /* PhotoItem.swift */,
 			);
-			path = Model;
+			path = "Shared Models";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -51,52 +51,53 @@ final class PhotoPageTests: XCTestCase {
     }
     
     func test_subscript_getter() throws {
-        let item0 = PhotoPage.mock[IndexPath(row: 0, section: 0)]
-        let item1 = PhotoPage.mock[IndexPath(row: 0, section: 1)]
-        let item2 = PhotoPage.mock[IndexPath(row: 1, section: 1)]
-        let item3 = PhotoPage.mock[IndexPath(row: 2, section: 1)]
-        let item4 = PhotoPage.mock[IndexPath(row: 3, section: 1)]
-        let item5 = PhotoPage.mock[IndexPath(row: 4, section: 1)]
-        let item6 = PhotoPage.mock[IndexPath(row: 5, section: 1)]
-        let item7 = PhotoPage.mock[IndexPath(row: 0, section: 2)]
-        let item8 = PhotoPage.mock[IndexPath(row: 1, section: 2)]
-        let item9 = PhotoPage.mock[IndexPath(row: 2, section: 2)]
+        let mock = PhotoPage.mock()
+        let item0 = mock[IndexPath(row: 0, section: 0)]
+        let item1 = mock[IndexPath(row: 0, section: 1)]
+        let item2 = mock[IndexPath(row: 1, section: 1)]
+        let item3 = mock[IndexPath(row: 2, section: 1)]
+        let item4 = mock[IndexPath(row: 3, section: 1)]
+        let item5 = mock[IndexPath(row: 4, section: 1)]
+        let item6 = mock[IndexPath(row: 5, section: 1)]
+        let item7 = mock[IndexPath(row: 0, section: 2)]
+        let item8 = mock[IndexPath(row: 1, section: 2)]
+        let item9 = mock[IndexPath(row: 2, section: 2)]
         
-        XCTAssertEqual(item0, PhotoPage.mock.topItem)
-        XCTAssertEqual(item1, PhotoPage.mock.middleSection[0])
-        XCTAssertEqual(item2, PhotoPage.mock.middleSection[1])
-        XCTAssertEqual(item3, PhotoPage.mock.middleSection[2])
-        XCTAssertEqual(item4, PhotoPage.mock.middleSection[3])
-        XCTAssertEqual(item5, PhotoPage.mock.middleSection[4])
-        XCTAssertEqual(item6, PhotoPage.mock.middleSection[5])
-        XCTAssertEqual(item7, PhotoPage.mock.bottomSection[0])
-        XCTAssertEqual(item8, PhotoPage.mock.bottomSection[1])
-        XCTAssertEqual(item9, PhotoPage.mock.bottomSection[2])
+        XCTAssertEqual(item0, mock.topItem)
+        XCTAssertEqual(item1, mock.middleSection[0])
+        XCTAssertEqual(item2, mock.middleSection[1])
+        XCTAssertEqual(item3, mock.middleSection[2])
+        XCTAssertEqual(item4, mock.middleSection[3])
+        XCTAssertEqual(item5, mock.middleSection[4])
+        XCTAssertEqual(item6, mock.middleSection[5])
+        XCTAssertEqual(item7, mock.bottomSection[0])
+        XCTAssertEqual(item8, mock.bottomSection[1])
+        XCTAssertEqual(item9, mock.bottomSection[2])
     }
     
     func test_subscript_setter() throws {
         let mockImage = UIImage()
+        var mock = PhotoPage.mock()
+        mock[IndexPath(row: 0, section: 0)].image = mockImage
+        mock[IndexPath(row: 0, section: 1)].image = mockImage
+        mock[IndexPath(row: 1, section: 1)].image = mockImage
+        mock[IndexPath(row: 2, section: 1)].image = mockImage
+        mock[IndexPath(row: 3, section: 1)].image = mockImage
+        mock[IndexPath(row: 4, section: 1)].image = mockImage
+        mock[IndexPath(row: 5, section: 1)].image = mockImage
+        mock[IndexPath(row: 0, section: 2)].image = mockImage
+        mock[IndexPath(row: 1, section: 2)].image = mockImage
+        mock[IndexPath(row: 2, section: 2)].image = mockImage
         
-        PhotoPage.mock[IndexPath(row: 0, section: 0)].image = mockImage
-        PhotoPage.mock[IndexPath(row: 0, section: 1)].image = mockImage
-        PhotoPage.mock[IndexPath(row: 1, section: 1)].image = mockImage
-        PhotoPage.mock[IndexPath(row: 2, section: 1)].image = mockImage
-        PhotoPage.mock[IndexPath(row: 3, section: 1)].image = mockImage
-        PhotoPage.mock[IndexPath(row: 4, section: 1)].image = mockImage
-        PhotoPage.mock[IndexPath(row: 5, section: 1)].image = mockImage
-        PhotoPage.mock[IndexPath(row: 0, section: 2)].image = mockImage
-        PhotoPage.mock[IndexPath(row: 1, section: 2)].image = mockImage
-        PhotoPage.mock[IndexPath(row: 2, section: 2)].image = mockImage
-        
-        XCTAssertEqual(mockImage, PhotoPage.mock.topItem.image)
-        XCTAssertEqual(mockImage, PhotoPage.mock.middleSection[0].image)
-        XCTAssertEqual(mockImage, PhotoPage.mock.middleSection[1].image)
-        XCTAssertEqual(mockImage, PhotoPage.mock.middleSection[2].image)
-        XCTAssertEqual(mockImage, PhotoPage.mock.middleSection[3].image)
-        XCTAssertEqual(mockImage, PhotoPage.mock.middleSection[4].image)
-        XCTAssertEqual(mockImage, PhotoPage.mock.middleSection[5].image)
-        XCTAssertEqual(mockImage, PhotoPage.mock.bottomSection[0].image)
-        XCTAssertEqual(mockImage, PhotoPage.mock.bottomSection[1].image)
-        XCTAssertEqual(mockImage, PhotoPage.mock.bottomSection[2].image)
+        XCTAssertEqual(mockImage, mock.topItem.image)
+        XCTAssertEqual(mockImage, mock.middleSection[0].image)
+        XCTAssertEqual(mockImage, mock.middleSection[1].image)
+        XCTAssertEqual(mockImage, mock.middleSection[2].image)
+        XCTAssertEqual(mockImage, mock.middleSection[3].image)
+        XCTAssertEqual(mockImage, mock.middleSection[4].image)
+        XCTAssertEqual(mockImage, mock.middleSection[5].image)
+        XCTAssertEqual(mockImage, mock.bottomSection[0].image)
+        XCTAssertEqual(mockImage, mock.bottomSection[1].image)
+        XCTAssertEqual(mockImage, mock.bottomSection[2].image)
     }
 }

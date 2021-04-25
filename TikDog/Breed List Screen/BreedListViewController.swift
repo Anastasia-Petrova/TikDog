@@ -31,6 +31,7 @@ final class BreedListViewController: UITableViewController {
         self.breedListPublisher = breedListPublisher
         self.didSelectBreed = didSelectBreed
         super.init(style: .insetGrouped)
+        title = "Dog Breeds"
     }
     
     required init?(coder: NSCoder) {

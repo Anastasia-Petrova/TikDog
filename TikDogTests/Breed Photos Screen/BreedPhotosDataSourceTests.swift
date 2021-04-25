@@ -40,14 +40,14 @@ final class BreedPhotosDataSourceTests: XCTestCase {
         dataSource.updateScrollingState()
         XCTAssertFalse(dataSource.collectionView.isScrollEnabled)
         
-        dataSource.state = .loaded(PhotoPage.mock)
+        dataSource.state = .loaded(PhotoPage.mock())
         dataSource.updateScrollingState()
         XCTAssertTrue(dataSource.collectionView.isScrollEnabled)
     }
     
     func test_setImage() {
         let dataSource = makeDataSource()
-        dataSource.state = .loaded(PhotoPage.mock)
+        dataSource.state = .loaded(PhotoPage.mock())
         let image = UIImage()
         
         dataSource.setImage(image, indexPath: IndexPath(row: 0, section: 0))
@@ -97,17 +97,17 @@ final class BreedPhotosDataSourceTests: XCTestCase {
     }
     
     func test_getSnapshot_whenLoaded() {
-        let snapshot = BreedPhotosDataSource.getSnapshot(for: .loaded(PhotoPage.mock))
-
+        let snapshot = BreedPhotosDataSource.getSnapshot(for: .loaded(PhotoPage.mock()))
+        let mockPhotoPage = PhotoPage.mock()
         XCTAssertEqual(snapshot.sectionIdentifiers, Section.allCases)
-        XCTAssertEqual(snapshot.itemIdentifiers(inSection: .top), [Row.item(PhotoPage.mock.topItem)])
+        XCTAssertEqual(snapshot.itemIdentifiers(inSection: .top), [Row.item(mockPhotoPage.topItem)])
         XCTAssertEqual(
             snapshot.itemIdentifiers(inSection: .middle),
-            PhotoPage.mock.middleSection.map(Row.item)
+            mockPhotoPage.middleSection.map(Row.item)
         )
         XCTAssertEqual(
             snapshot.itemIdentifiers(inSection: .bottom),
-            PhotoPage.mock.bottomSection.map(Row.item)
+            mockPhotoPage.bottomSection.map(Row.item)
         )
     }
     

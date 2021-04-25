@@ -41,6 +41,7 @@ final class App {
     
     private func makeBreedPhotosScreen(breed: Breed) -> BreedPhotosViewController {
         BreedPhotosViewController(
+            breedName: breed.name,
             breedPhotosPublisher: { self.service.getBreedPhotos(breed) },
             loadImage: imageLoader.load
         )

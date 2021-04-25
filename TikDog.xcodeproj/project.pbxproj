@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,7 +13,6 @@
 		6D26832E262F7E35007591E2 /* BreedListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D26832D262F7E35007591E2 /* BreedListViewController.swift */; };
 		6D268333262F7E35007591E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D268332262F7E35007591E2 /* Assets.xcassets */; };
 		6D268336262F7E35007591E2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D268334262F7E35007591E2 /* LaunchScreen.storyboard */; };
-		6D268341262F7E36007591E2 /* TikDogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D268340262F7E36007591E2 /* TikDogTests.swift */; };
 		6D26834C262F7E36007591E2 /* TikDogUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D26834B262F7E36007591E2 /* TikDogUITests.swift */; };
 		6D268363262F80C0007591E2 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D268362262F80C0007591E2 /* WebService.swift */; };
 		6D268368262F80CD007591E2 /* DogAPIServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D268367262F80CD007591E2 /* DogAPIServiceTests.swift */; };
@@ -47,6 +46,12 @@
 		6DFE805A2636126E00FA95F1 /* BreedPhotosDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE80592636126E00FA95F1 /* BreedPhotosDataSourceTests.swift */; };
 		6DFE806C263615E500FA95F1 /* PhotoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE805E2636156400FA95F1 /* PhotoPage.swift */; };
 		6DFE807426361C9C00FA95F1 /* PhotoPageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE807326361C9C00FA95F1 /* PhotoPageTests.swift */; };
+		6DFE80B0263621FA00FA95F1 /* BreedPhotoErrorCellSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE808426361FB800FA95F1 /* BreedPhotoErrorCellSnapshotTests.swift */; };
+		6DFE80B72636223000FA95F1 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 6DFE80B62636223000FA95F1 /* SnapshotTesting */; };
+		6DFE80BD2636228A00FA95F1 /* BreedPhotoCellSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE80BC2636228A00FA95F1 /* BreedPhotoCellSnapshotTests.swift */; };
+		6DFE80C72636244C00FA95F1 /* BreedListViewControllerSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE80C62636244C00FA95F1 /* BreedListViewControllerSnapshotTests.swift */; };
+		6DFE80CD263625D000FA95F1 /* BreedPhotosViewControllerSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE80CC263625D000FA95F1 /* BreedPhotosViewControllerSnapshotTests.swift */; };
+		6DFE80D3263626D900FA95F1 /* MockImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DFE80D2263626D900FA95F1 /* MockImages.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +63,13 @@
 			remoteInfo = TikDog;
 		};
 		6D268348262F7E36007591E2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D26831E262F7E35007591E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6D268325262F7E35007591E2;
+			remoteInfo = TikDog;
+		};
+		6DFE80922636218400FA95F1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6D26831E262F7E35007591E2 /* Project object */;
 			proxyType = 1;
@@ -76,7 +88,6 @@
 		6D268335262F7E35007591E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6D268337262F7E35007591E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6D26833C262F7E36007591E2 /* TikDogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TikDogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6D268340262F7E36007591E2 /* TikDogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TikDogTests.swift; sourceTree = "<group>"; };
 		6D268342262F7E36007591E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6D268347262F7E36007591E2 /* TikDogUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TikDogUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D26834B262F7E36007591E2 /* TikDogUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TikDogUITests.swift; sourceTree = "<group>"; };
@@ -113,6 +124,13 @@
 		6DFE80592636126E00FA95F1 /* BreedPhotosDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotosDataSourceTests.swift; sourceTree = "<group>"; };
 		6DFE805E2636156400FA95F1 /* PhotoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPage.swift; sourceTree = "<group>"; };
 		6DFE807326361C9C00FA95F1 /* PhotoPageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPageTests.swift; sourceTree = "<group>"; };
+		6DFE808426361FB800FA95F1 /* BreedPhotoErrorCellSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotoErrorCellSnapshotTests.swift; sourceTree = "<group>"; };
+		6DFE808D2636218400FA95F1 /* TikDogSnapshotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TikDogSnapshotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DFE80912636218400FA95F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6DFE80BC2636228A00FA95F1 /* BreedPhotoCellSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotoCellSnapshotTests.swift; sourceTree = "<group>"; };
+		6DFE80C62636244C00FA95F1 /* BreedListViewControllerSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListViewControllerSnapshotTests.swift; sourceTree = "<group>"; };
+		6DFE80CC263625D000FA95F1 /* BreedPhotosViewControllerSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotosViewControllerSnapshotTests.swift; sourceTree = "<group>"; };
+		6DFE80D2263626D900FA95F1 /* MockImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MockImages.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +155,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6DFE808A2636218400FA95F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DFE80B72636223000FA95F1 /* SnapshotTesting in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -145,6 +171,7 @@
 			children = (
 				6D268328262F7E35007591E2 /* TikDog */,
 				6D26833F262F7E36007591E2 /* TikDogTests */,
+				6DFE808E2636218400FA95F1 /* TikDogSnapshotTests */,
 				6D26834A262F7E36007591E2 /* TikDogUITests */,
 				6D268327262F7E35007591E2 /* Products */,
 			);
@@ -156,6 +183,7 @@
 				6D268326262F7E35007591E2 /* TikDog.app */,
 				6D26833C262F7E36007591E2 /* TikDogTests.xctest */,
 				6D268347262F7E36007591E2 /* TikDogUITests.xctest */,
+				6DFE808D2636218400FA95F1 /* TikDogSnapshotTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -186,7 +214,6 @@
 				6DFE804426360C7000FA95F1 /* Breed Photos Screen */,
 				6D268367262F80CD007591E2 /* DogAPIServiceTests.swift */,
 				6D268342262F7E36007591E2 /* Info.plist */,
-				6D268340262F7E36007591E2 /* TikDogTests.swift */,
 			);
 			path = TikDogTests;
 			sourceTree = "<group>";
@@ -344,6 +371,19 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		6DFE808E2636218400FA95F1 /* TikDogSnapshotTests */ = {
+			isa = PBXGroup;
+			children = (
+				6DFE808426361FB800FA95F1 /* BreedPhotoErrorCellSnapshotTests.swift */,
+				6DFE80BC2636228A00FA95F1 /* BreedPhotoCellSnapshotTests.swift */,
+				6DFE80C62636244C00FA95F1 /* BreedListViewControllerSnapshotTests.swift */,
+				6DFE80CC263625D000FA95F1 /* BreedPhotosViewControllerSnapshotTests.swift */,
+				6DFE80912636218400FA95F1 /* Info.plist */,
+				6DFE80D2263626D900FA95F1 /* MockImages.xcassets */,
+			);
+			path = TikDogSnapshotTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -360,6 +400,8 @@
 			dependencies = (
 			);
 			name = TikDog;
+			packageProductDependencies = (
+			);
 			productName = TikDog;
 			productReference = 6D268326262F7E35007591E2 /* TikDog.app */;
 			productType = "com.apple.product-type.application";
@@ -378,6 +420,8 @@
 				6D26833E262F7E36007591E2 /* PBXTargetDependency */,
 			);
 			name = TikDogTests;
+			packageProductDependencies = (
+			);
 			productName = TikDogTests;
 			productReference = 6D26833C262F7E36007591E2 /* TikDogTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -400,6 +444,27 @@
 			productReference = 6D268347262F7E36007591E2 /* TikDogUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		6DFE808C2636218400FA95F1 /* TikDogSnapshotTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6DFE80942636218400FA95F1 /* Build configuration list for PBXNativeTarget "TikDogSnapshotTests" */;
+			buildPhases = (
+				6DFE80892636218400FA95F1 /* Sources */,
+				6DFE808A2636218400FA95F1 /* Frameworks */,
+				6DFE808B2636218400FA95F1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6DFE80932636218400FA95F1 /* PBXTargetDependency */,
+			);
+			name = TikDogSnapshotTests;
+			packageProductDependencies = (
+				6DFE80B62636223000FA95F1 /* SnapshotTesting */,
+			);
+			productName = TikDogSnapshotTests;
+			productReference = 6DFE808D2636218400FA95F1 /* TikDogSnapshotTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -420,6 +485,10 @@
 						CreatedOnToolsVersion = 12.4;
 						TestTargetID = 6D268325262F7E35007591E2;
 					};
+					6DFE808C2636218400FA95F1 = {
+						CreatedOnToolsVersion = 12.4;
+						TestTargetID = 6D268325262F7E35007591E2;
+					};
 				};
 			};
 			buildConfigurationList = 6D268321262F7E35007591E2 /* Build configuration list for PBXProject "TikDog" */;
@@ -431,6 +500,9 @@
 				Base,
 			);
 			mainGroup = 6D26831D262F7E35007591E2;
+			packageReferences = (
+				6DFE80B52636223000FA95F1 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+			);
 			productRefGroup = 6D268327262F7E35007591E2 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -438,6 +510,7 @@
 				6D268325262F7E35007591E2 /* TikDog */,
 				6D26833B262F7E36007591E2 /* TikDogTests */,
 				6D268346262F7E36007591E2 /* TikDogUITests */,
+				6DFE808C2636218400FA95F1 /* TikDogSnapshotTests */,
 			);
 		};
 /* End PBXProject section */
@@ -463,6 +536,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6DFE808B2636218400FA95F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DFE80D3263626D900FA95F1 /* MockImages.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -508,7 +589,6 @@
 				6DFE805A2636126E00FA95F1 /* BreedPhotosDataSourceTests.swift in Sources */,
 				6DFE7FFD2635EE2A00FA95F1 /* BreedTests.swift in Sources */,
 				6DFE804726360C8100FA95F1 /* BreedPhotoErrorCellTests.swift in Sources */,
-				6D268341262F7E36007591E2 /* TikDogTests.swift in Sources */,
 				6DFE803A2635FB8200FA95F1 /* BreedListViewControllerTests.swift in Sources */,
 				6D268368262F80CD007591E2 /* DogAPIServiceTests.swift in Sources */,
 				6DFE802D2635FA5900FA95F1 /* BreedCellTests.swift in Sources */,
@@ -528,6 +608,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6DFE80892636218400FA95F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DFE80CD263625D000FA95F1 /* BreedPhotosViewControllerSnapshotTests.swift in Sources */,
+				6DFE80B0263621FA00FA95F1 /* BreedPhotoErrorCellSnapshotTests.swift in Sources */,
+				6DFE80C72636244C00FA95F1 /* BreedListViewControllerSnapshotTests.swift in Sources */,
+				6DFE80BD2636228A00FA95F1 /* BreedPhotoCellSnapshotTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -540,6 +631,11 @@
 			isa = PBXTargetDependency;
 			target = 6D268325262F7E35007591E2 /* TikDog */;
 			targetProxy = 6D268348262F7E36007591E2 /* PBXContainerItemProxy */;
+		};
+		6DFE80932636218400FA95F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6D268325262F7E35007591E2 /* TikDog */;
+			targetProxy = 6DFE80922636218400FA95F1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -791,6 +887,44 @@
 			};
 			name = Release;
 		};
+		6DFE80952636218400FA95F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = TikDogSnapshotTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = anastasia.petrova.TikDogSnapshotTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TikDog.app/TikDog";
+			};
+			name = Debug;
+		};
+		6DFE80962636218400FA95F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = TikDogSnapshotTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = anastasia.petrova.TikDogSnapshotTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TikDog.app/TikDog";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -830,7 +964,35 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		6DFE80942636218400FA95F1 /* Build configuration list for PBXNativeTarget "TikDogSnapshotTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6DFE80952636218400FA95F1 /* Debug */,
+				6DFE80962636218400FA95F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6DFE80B52636223000FA95F1 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.8.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6DFE80B62636223000FA95F1 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6DFE80B52636223000FA95F1 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6D26831E262F7E35007591E2 /* Project object */;
 }

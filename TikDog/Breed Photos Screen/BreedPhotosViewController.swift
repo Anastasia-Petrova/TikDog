@@ -27,12 +27,14 @@ final class BreedPhotosViewController: UICollectionViewController {
     let loadImage: (URL) -> AnyPublisher<UIImage?, Never>
     
     init(
+        breedName: String,
         breedPhotosPublisher: @escaping () -> AnyPublisher<Result<PhotoPage, WebError>, Never>,
         loadImage: @escaping (URL) -> AnyPublisher<UIImage?, Never>
     ) {
         self.breedPhotosPublisher = breedPhotosPublisher
         self.loadImage = loadImage
         super.init(collectionViewLayout: Self.collectionLayout)
+        title = breedName
     }
     
     required init?(coder: NSCoder) {

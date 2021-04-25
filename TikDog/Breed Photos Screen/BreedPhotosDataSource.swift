@@ -1,364 +1,145 @@
-//
-//  BreedPhotosDataSource.swift
-//  TikDog
-//
-//  Created by Anastasia Petrova on 24/04/2021.
-//
-
 import Combine
-import Foundation
 import UIKit
 
-struct Page {
-    var topSection: Section.Top
-    var middleSection: Section.Middle?
-    var bottomSection: Section.Bottom?
+final class BreedPhotosDataSource: UICollectionViewDiffableDataSource<BreedPhotosViewController.Section, BreedPhotosViewController.Row> {
+    typealias Row = BreedPhotosViewController.Row
+    typealias Section = BreedPhotosViewController.Section
     
-    static let numberOfSections = 3
+    var state: Loadable<Page> = .loading {
+        didSet {
+            updateCollectionView()
+        }
+    }
+    let getBreedPhotos: () -> AnyPublisher<Result<Page, WebError>, Never>
+    let collectionView: UICollectionView
+    var subscription: AnyCancellable?
     
-    static var layout: UICollectionViewLayout {
-        UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
-            switch sectionIndex {
-            case 0:
-                return Section.Top.layout
-            case 1:
-                return Section.Middle.layout
-            case 2:
-                return Section.Bottom.layout
-            default:
-                return nil
+    init(
+        collectionView: UICollectionView,
+        getBreedPhotos: @escaping () -> AnyPublisher<Result<Page, WebError>, Never>,
+        loadImage: @escaping (URL) -> AnyPublisher<UIImage?, Never>,
+        retryAction: @escaping () -> Void,
+        setImage: @escaping (UIImage, IndexPath) -> Void
+    ) {
+        self.getBreedPhotos = getBreedPhotos
+        self.collectionView = collectionView
+        var subscriptions = Set<AnyCancellable>()
+        
+        super.init(collectionView: collectionView) { collectionView, indexPath, row -> UICollectionViewCell? in
+            switch row {
+            case let .item(item):
+                if let image = item.image {
+                    return Self.makePhotoCell(collectionView, indexPath: indexPath, image: image)
+                } else {
+                    loadImage(item.url)
+                        .receive(on: DispatchQueue.main)
+                        .sink { image in
+                            if let image = image {
+                                setImage(image, indexPath)
+                            }
+                        }
+                        .store(in: &subscriptions)
+                    
+                    return Self.makePlaceholderCell(collectionView, indexPath: indexPath)
+                }
+                
+            case let .error(message):
+                return Self.makeErrorCell(
+                    collectionView,
+                    indexPath: indexPath,
+                    message: message,
+                    retryAction: retryAction
+                )
+                
+            case .placeholder:
+                return Self.makePlaceholderCell(collectionView, indexPath: indexPath)
             }
         }
     }
     
-    static var numberOfItems: Int {
-        Section.Top.numberOfItems + Section.Middle.numberOfItems + Section.Bottom.numberOfItems
+    static func makePhotoCell(_ collectionView: UICollectionView, indexPath: IndexPath, image: UIImage) -> BreedPhotoCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BreedPhotoCell.identifier, for: indexPath) as! BreedPhotoCell
+        cell.imageView.image = image
+        return cell
     }
     
-    static func numberOfItems(in sectionIndex: Int) -> Int {
-        switch sectionIndex {
-        case 0:
-            return Section.Top.numberOfItems
-        case 1:
-            return Section.Middle.numberOfItems
-        case 2:
-            return Section.Bottom.numberOfItems
+    
+    static func makePlaceholderCell(_ collectionView: UICollectionView, indexPath: IndexPath) -> BreedPhotoCell.Placeholder {
+        collectionView.dequeueReusableCell(withReuseIdentifier: BreedPhotoCell.Placeholder.identifier, for: indexPath) as! BreedPhotoCell.Placeholder
+    }
+    
+    static func makeErrorCell(
+        _ collectionView: UICollectionView,
+        indexPath: IndexPath,
+        message: String,
+        retryAction: @escaping () -> Void
+    ) -> BreedPhotoErrorCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BreedPhotoErrorCell.identifier, for: indexPath) as! BreedPhotoErrorCell
+        cell.setMessage(message)
+        cell.didTapRetryButton = retryAction
+        return cell
+    }
+    
+    private func updateCollectionView() {
+        updateScrollingState()
+        updateData()
+    }
+    
+    private func updateScrollingState() {
+        switch state {
+        case .failed, .loading:
+            collectionView.isScrollEnabled = false
+        case .loaded:
+            collectionView.isScrollEnabled = true
+        }
+    }
+    
+    private func updateData() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
+        switch state {
+        case .loading:
+            func makePlaceholders(count: Int) -> [Row] {
+                (0..<count).map { _ in Row.placeholder(UUID()) }
+            }
+            snapshot.appendSections(Section.allCases)
+            snapshot.appendItems(makePlaceholders(count: Page.Section.Top.numberOfItems), toSection: Section.top)
+            snapshot.appendItems(makePlaceholders(count: Page.Section.Middle.numberOfItems), toSection: Section.middle)
+            snapshot.appendItems(makePlaceholders(count: Page.Section.Bottom.numberOfItems), toSection: Section.bottom)
+            
+        case let .loaded(page):
+            snapshot.appendSections(Section.allCases)
+            snapshot.appendItems([BreedPhotosViewController.Row.item(page.topSection.item)], toSection: Section.top)
+            snapshot.appendItems(page.middleSection?.items.map(Row.item) ?? [], toSection: Section.middle)
+            snapshot.appendItems(page.bottomSection?.items.map(Row.item) ?? [], toSection: Section.bottom)
+            
+        case let .failed(error):
+            snapshot.appendSections([Section.top])
+            snapshot.appendItems([BreedPhotosViewController.Row.error(error.message)], toSection: Section.top)
+        }
+        apply(snapshot, animatingDifferences: true)
+    }
+    
+    func fetch() {
+        state = .loading
+        subscription = getBreedPhotos()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                switch result {
+                case let .success(page):
+                    self?.state = .loaded(page)
+                case let .failure(error):
+                    self?.state = .failed(error)
+                }
+            }
+    }
+    
+    func setImage(_ image: UIImage, indexPath: IndexPath) {
+        switch state {
+        case var .loaded(page):
+            page[indexPath]?.image = image
+            state = .loaded(page)
         default:
-            fatalError("Index out of range")
+            break
         }
-    }
-    
-    subscript(indexPath: IndexPath) -> Item? {
-        get {
-            let rowIndex = indexPath.row
-            
-            switch indexPath.section {
-            case 0:
-                guard rowIndex == 0 else { fatalError("Index out of range") }
-                return topSection.item
-                
-            case 1:
-                switch rowIndex {
-                case 0:
-                    return middleSection?.leadingColumn.top
-                case 1:
-                    return middleSection?.leadingColumn.bottom
-                case 2:
-                    return middleSection?.centralColumn?.top
-                case 3:
-                    return middleSection?.centralColumn?.bottom
-                case 4:
-                    return middleSection?.trailingColumn?.top
-                case 5:
-                    return middleSection?.trailingColumn?.bottom
-                default:
-                    fatalError("Index out of range")
-                }
-                
-            case 2:
-                switch rowIndex {
-                case 0:
-                    return bottomSection?.leadingItem
-                case 1:
-                    return bottomSection?.trailingColumn?.top
-                case 2:
-                    return bottomSection?.trailingColumn?.bottom
-                default:
-                    fatalError("Index out of range")
-                }
-            default:
-                fatalError("Index out of range")
-            }
-        }
-        set {
-            guard let newValue = newValue else { return }
-            let rowIndex = indexPath.row
-            
-            switch indexPath.section {
-            case 0:
-                guard rowIndex == 0 else { fatalError("Index out of range") }
-                topSection.item = newValue
-                
-            case 1:
-                switch rowIndex {
-                case 0:
-                    middleSection?.leadingColumn.top = newValue
-                case 1:
-                    middleSection?.leadingColumn.bottom = newValue
-                case 2:
-                    middleSection?.centralColumn?.top = newValue
-                case 3:
-                    middleSection?.centralColumn?.bottom = newValue
-                case 4:
-                    middleSection?.trailingColumn?.top = newValue
-                case 5:
-                    middleSection?.trailingColumn?.bottom = newValue
-                default:
-                    fatalError("Index out of range")
-                }
-                
-            case 2:
-                switch rowIndex {
-                case 0:
-                    bottomSection?.leadingItem = newValue
-                case 1:
-                    bottomSection?.trailingColumn?.top = newValue
-                case 2:
-                    bottomSection?.trailingColumn?.bottom = newValue
-                default:
-                    fatalError("Index out of range")
-                }
-            default:
-                fatalError("Index out of range")
-            }
-        }
-    }
-    
-    var items: [Item] {
-        [topSection.item] + (middleSection?.items ?? []) + (bottomSection?.items ?? [])
-    }
-    
-    enum Section: Hashable {
-        case top(Top)
-        case middle(Middle)
-        case bottom(Bottom)
-        
-        func numberOfItems(availableItems: Int = 10) -> Int {
-            switch self {
-            case .top:
-                return min(Top.numberOfItems, availableItems)
-                
-            case .middle:
-                return min(Middle.numberOfItems, availableItems - Top.numberOfItems)
-                
-            case .bottom:
-                return min(Bottom.numberOfItems, availableItems - Middle.numberOfItems - Top.numberOfItems)
-            }
-        }
-        
-        struct Column: Hashable {
-            var top: Item
-            var bottom: Item?
-            
-            var items: [Item] {
-                [top, bottom].compactMap { $0 }
-            }
-
-            subscript(index: Int) -> Item? {
-                switch index {
-                case 0:
-                    return top
-                case 1:
-                    return bottom
-                default:
-                    return nil
-                }
-            }
-        }
-        
-        struct Top: Hashable {
-            var item: Item
-            var numberOfItems: Int { 1 }
-            
-            static let numberOfItems = 1
-        }
-        
-        struct Middle: Hashable {
-            var leadingColumn: Column
-            var centralColumn: Column?
-            var trailingColumn: Column?
-            
-            var items: [Item] {
-                leadingColumn.items + (centralColumn?.items ?? []) + (trailingColumn?.items ?? [])
-            }
-            var numberOfItems: Int { items.count }
-            
-            static let numberOfItems: Int = 6
-        }
-        
-        struct Bottom: Hashable {
-            var leadingItem: Item
-            var trailingColumn: Column?
-            
-            var items: [Item] {
-                [leadingItem] + (trailingColumn?.items ?? [])
-            }
-            
-            var numberOfItems: Int { items.count }
-            
-            static let numberOfItems: Int = 3
-        }
-    }
-}
-
-protocol SectionLayout {
-    static var layout: NSCollectionLayoutSection { get }
-}
-
-extension Page.Section.Top: SectionLayout {
-    static var layout: NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
-        )
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0/3.0)
-            ),
-            subitems: [item]
-        )
-        return NSCollectionLayoutSection(group: group)
-    }
-}
-
-extension Page.Section.Middle: SectionLayout {
-    static var layout: NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0/3.0)
-            )
-        )
-        let verticalGroup = NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0/3.0),
-                heightDimension: .fractionalHeight(1.0)
-            ),
-            subitem: item,
-            count: 2
-        )
-        let horizontalGroup = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0/3.0)
-            ),
-            subitem: verticalGroup,
-            count: 3
-        )
-        return NSCollectionLayoutSection(group: horizontalGroup)
-    }
-}
-
-extension Page.Section.Bottom: SectionLayout {
-    static var layout: NSCollectionLayoutSection {
-        let leadingItem = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(2.0/3.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
-        )
-        let trailingItem = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0/3.0)
-            )
-        )
-        let trailingGroup = NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0/3.0),
-                heightDimension: .fractionalHeight(1.0)
-            ),
-            subitem: trailingItem,
-            count: 2
-        )
-
-        let nestedGroup = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0/3.0)
-            ),
-            subitems: [leadingItem, trailingGroup]
-        )
-        return NSCollectionLayoutSection(group: nestedGroup)
-    }
-}
-
-extension Array {
-    subscript(maybe index: Int) -> Element? {
-        guard index < count else { return nil }
-        return self[index]
-    }
-}
-
-extension Page: Decodable {
-    private enum CodingKeys: String, CodingKey {
-        case message
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let urls = try container.decode([URL].self, forKey: .message)
-        
-        guard urls.count > 0 else {
-            throw DecodingError.typeMismatch(
-                Page.self,
-                DecodingError.Context(codingPath: [], debugDescription: "Expected to get at least one URL")
-            )
-        }
-        topSection = Section.Top(item: Item(url: urls[0]))
-        middleSection = urls[maybe: 1].map { url in
-            Section.Middle(
-                leadingColumn: Section.Column(
-                    top: Item(url: url),
-                    bottom: urls[maybe: 2].map(Item.init)
-                ),
-                centralColumn: urls[maybe: 3].map { url in
-                    Section.Column(
-                        top: Item(url: url),
-                        bottom: urls[maybe: 4].map(Item.init)
-                    )
-                },
-                trailingColumn: urls[maybe: 5].map { url in
-                    Section.Column(
-                        top: Item(url: url),
-                        bottom: urls[maybe: 6].map(Item.init)
-                    )
-                }
-            )
-        }
-        bottomSection = urls[maybe: 7].map { url in
-            Section.Bottom(
-                leadingItem: Item(url: url),
-                trailingColumn: urls[maybe: 8].map { url in
-                    Section.Column(
-                        top: Item(url: url),
-                        bottom: urls[maybe: 9].map(Item.init)
-                    )
-                }
-            )
-        }
-    }
-}
-
-struct Item: Hashable {
-    let url: URL
-    var image: UIImage?
-    
-    init(url: URL) {
-        self.url = url
-        image = nil
     }
 }

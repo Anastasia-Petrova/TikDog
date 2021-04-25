@@ -28,6 +28,7 @@
 		6D75EFA0263398FE003D09F3 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D75EF9F263398FE003D09F3 /* Section.swift */; };
 		6D75EFA5263399C9003D09F3 /* BreedPhotosDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D75EFA4263399C9003D09F3 /* BreedPhotosDataSource.swift */; };
 		6D75EFB626359BE6003D09F3 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D75EFB526359BE6003D09F3 /* ShimmerView.swift */; };
+		6D9163B72635B41900A957F3 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9163B62635B41900A957F3 /* Page.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		6D75EF9F263398FE003D09F3 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		6D75EFA4263399C9003D09F3 /* BreedPhotosDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotosDataSource.swift; sourceTree = "<group>"; };
 		6D75EFB526359BE6003D09F3 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
+		6D9163B62635B41900A957F3 /* Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +183,7 @@
 				6D75EFBB26359C61003D09F3 /* Cells */,
 				6D26836C262F8152007591E2 /* BreedPhotosViewController.swift */,
 				6D75EFA4263399C9003D09F3 /* BreedPhotosDataSource.swift */,
+				6D9163B62635B41900A957F3 /* Page.swift */,
 				6D75EF9F263398FE003D09F3 /* Section.swift */,
 			);
 			path = "Breed Photos Screen";
@@ -349,6 +352,7 @@
 				6D75EF96263393F9003D09F3 /* ImageLoader.swift in Sources */,
 				6D75EFA0263398FE003D09F3 /* Section.swift in Sources */,
 				6D26836D262F8152007591E2 /* BreedPhotosViewController.swift in Sources */,
+				6D9163B72635B41900A957F3 /* Page.swift in Sources */,
 				6D75EFA5263399C9003D09F3 /* BreedPhotosDataSource.swift in Sources */,
 				6D404F2D2630A7D300ED67CF /* BreedCell.swift in Sources */,
 				6D26832A262F7E35007591E2 /* AppDelegate.swift in Sources */,

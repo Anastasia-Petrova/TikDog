@@ -9,6 +9,8 @@ import SnapshotTesting
 @testable import TikDog
 import XCTest
 
+//------- RUN SNAPSHOT TESTS ON iPhone SE (2nd generation) 14.4 -------
+
 final class BreedListViewControllerSnapshotTests: XCTestCase {
     func test_loaded() {
         let vc = BreedListViewController(

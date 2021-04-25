@@ -1,50 +1,27 @@
 //
-//  BreedPhotoPlaceholderCell.swift
+//  ShimmerView.swift
 //  TikDog
 //
-//  Created by Anastasia Petrova on 24/04/2021.
+//  Created by Anastasia Petrova on 25/04/2021.
 //
 
 import Foundation
 import UIKit
 
-final class BreedPhotoPlaceholderCell: UICollectionViewCell {
-    static let identifier = String(describing: BreedPhotoPlaceholderCell.self)
-    let shimmerView: ShimmerView = {
-       let imageView = ShimmerView()
-        return imageView
-    }()
+final class ShimmerView: UIView {
+    let gradientLayer = CAGradientLayer()
+    let borderWidth: CGFloat
+    let isDiagonal: Bool
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-//        shimmerView.backgroundColor = .red
-        setUp()
+    init(borderWidth: CGFloat = 0, isDiagonal: Bool = false) {
+        self.borderWidth = borderWidth
+        self.isDiagonal = isDiagonal
+        super.init(frame: .zero)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-//        shimmerView.layoutIfNeeded()
-//        shimmerView.startAnimating()
-//    }
-    
-    func setUp() {
-        shimmerView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(shimmerView)
-        NSLayoutConstraint.activate([
-            shimmerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: shimmerView.trailingAnchor),
-            shimmerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: shimmerView.bottomAnchor),
-        ])
-    }
-}
-
-class ShimmerView: UIView {
-    let gradientLayer = CAGradientLayer()
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -56,10 +33,10 @@ class ShimmerView: UIView {
     func addGradientLayer() {
         let darkColor = UIColor(white: 0.65, alpha: 1.0).cgColor
         let lightColor = UIColor(white: 0.75, alpha: 1.0).cgColor
-        gradientLayer.borderWidth = 1
+        gradientLayer.borderWidth = borderWidth
         gradientLayer.borderColor = darkColor
         gradientLayer.frame = bounds
-        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: isDiagonal ? 0.0 : 1.0)
         gradientLayer.endPoint = CGPoint(x: 1.0, y: 1.0)
         gradientLayer.colors = [lightColor, darkColor, lightColor]
         gradientLayer.locations = [0.0, 0.5, 1.0]

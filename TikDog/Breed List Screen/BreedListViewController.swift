@@ -24,7 +24,7 @@ final class BreedListViewController: UITableViewController {
     ) {
         self.breedListFetcher = breedListFetcher
         self.didSelectBreed = didSelectBreed
-        super.init(nibName: nil, bundle: nil)
+        super.init(style: .insetGrouped)
     }
     
     required init?(coder: NSCoder) {
@@ -34,10 +34,9 @@ final class BreedListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(BreedCell.self, forCellReuseIdentifier: BreedCell.identifier)
-        tableView.register(BreedPlaceholderCell.self, forCellReuseIdentifier: BreedPlaceholderCell.identifier)
+        tableView.register(BreedCell.Placeholder.self, forCellReuseIdentifier: BreedCell.Placeholder.identifier)
         tableView.register(ErrorMessageCell.self, forCellReuseIdentifier: ErrorMessageCell.identifier)
         tableView.dataSource = dataSource
-        tableView.separatorStyle = .none
         fetchBreedList()
     }
     
@@ -59,6 +58,18 @@ final class BreedListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         dataSource.forBreedAt(indexPath, perform: didSelectBreed)
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let placeholderCell = cell as? BreedCell.Placeholder {
+            placeholderCell.layoutIfNeeded()
+            placeholderCell.shimmerView.startAnimating()
+        }
+    }
+    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let placeholderCell = cell as? BreedCell.Placeholder {
+            placeholderCell.shimmerView.stopAnimating()
+        }
     }
 }
 
@@ -104,7 +115,7 @@ final class BreedListDataSource: NSObject, UITableViewDataSource {
             return cell
             
         case .loading:
-            return tableView.dequeueReusableCell(withIdentifier: BreedPlaceholderCell.identifier, for: indexPath) as! BreedPlaceholderCell
+            return tableView.dequeueReusableCell(withIdentifier: BreedCell.Placeholder.identifier) as! BreedCell.Placeholder
             
         case let .loaded(breeds):
             let breed = breeds[indexPath.row]

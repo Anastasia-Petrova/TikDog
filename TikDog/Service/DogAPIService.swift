@@ -54,7 +54,7 @@ extension DogAPIService {
     ) -> AnyPublisher<Result<T, WebError>, Never> {
         session
             .dataTaskPublisher(for: request)
-//            .delay(for: 4, scheduler: DispatchQueue.main)
+            .delay(for: 4, scheduler: DispatchQueue.main)
             .tryMap { output in
                 guard let response = output.response as? HTTPURLResponse else {
                     throw WebError(

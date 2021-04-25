@@ -41,7 +41,7 @@ final class BreedPhotosViewController: UICollectionViewController {
                 return cell
                 
             case .placeholder:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BreedPhotoPlaceholderCell.identifier, for: indexPath) as! BreedPhotoPlaceholderCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BreedPhotoCell.Placeholder.identifier, for: indexPath) as! BreedPhotoCell.Placeholder
 //                cell.shimmerView.startAnimating()
                 return cell
             }
@@ -82,7 +82,7 @@ final class BreedPhotosViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(BreedPhotoCell.self, forCellWithReuseIdentifier: BreedPhotoCell.identifier)
-        collectionView.register(BreedPhotoPlaceholderCell.self, forCellWithReuseIdentifier: BreedPhotoPlaceholderCell.identifier)
+        collectionView.register(BreedPhotoCell.Placeholder.self, forCellWithReuseIdentifier: BreedPhotoCell.Placeholder.identifier)
         
         collectionView.dataSource = dataSource
         collectionView.showsVerticalScrollIndicator = false
@@ -130,14 +130,14 @@ final class BreedPhotosViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if let placeholderCell = cell as? BreedPhotoPlaceholderCell {
+        if let placeholderCell = cell as? BreedPhotoCell.Placeholder {
             placeholderCell.layoutIfNeeded()
             placeholderCell.shimmerView.startAnimating()
         }
     }
     
     override func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if let placeholderCell = cell as? BreedPhotoPlaceholderCell {
+        if let placeholderCell = cell as? BreedPhotoCell.Placeholder {
             placeholderCell.shimmerView.stopAnimating()
         }
     }

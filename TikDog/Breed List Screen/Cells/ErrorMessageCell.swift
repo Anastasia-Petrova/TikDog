@@ -45,14 +45,7 @@ final class ErrorMessageCell: UITableViewCell {
     func setUp() {
         let stackView = UIStackView(arrangedSubviews: [message, retryButton])
         stackView.axis = .vertical
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(stackView)
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            contentView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: 16),
-            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 50),
-            contentView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
-        ])
+        contentView.embedSubview(stackView, offset: 16)
     }
     
     func setMessage(_ text: String) {

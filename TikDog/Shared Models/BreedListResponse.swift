@@ -20,7 +20,18 @@ extension BreedListResponse: Decodable {
         breeds = try decoder
             .container(keyedBy: CodingKeys.self)
             .decode(Dictionary<String, [String]>.self, forKey: .message)
-            .map { Breed(name: $0, subBreeds: $1.map(Breed.init)) }
-            .sorted { $0.name < $1.name}
+            .flatMap { mainIdentifier, subBreedIdentifiers -> [Breed] in
+                if subBreedIdentifiers.isEmpty {
+                    return [Breed(identifier: mainIdentifier, name: mainIdentifier.capitalized)]
+                } else {
+                    return subBreedIdentifiers.map{
+                        Breed(
+                            identifier: mainIdentifier + "/" + $0,
+                            name: $0.capitalized + " " + mainIdentifier.capitalized
+                        )
+                    }
+                }
+            }
+            .sorted { $0.identifier < $1.identifier}
     }
 }

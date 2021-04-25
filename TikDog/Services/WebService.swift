@@ -20,7 +20,7 @@ extension WebService {
                 get(request: Endpoint.breedList.getRequest(for: baseURL))
             },
             getBreedPhotos: { breed in
-                get(request: Endpoint.breedPhotos(breedName: breed.name.lowercased()).getRequest(for: baseURL))
+                get(request: Endpoint.breedPhotos(breedName: breed.identifier).getRequest(for: baseURL))
             }
         )
     }

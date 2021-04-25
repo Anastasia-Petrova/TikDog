@@ -8,18 +8,13 @@
 import Foundation
 
 struct Breed: Hashable {
+    let identifier: String
     let name: String
-    let subBreeds: [Breed]
-    
-    init(name: String, subBreeds: [Breed]) {
-        self.name = name.capitalized
-        self.subBreeds = subBreeds
-    }
 }
 
 extension Breed {
-    init(name: String) {
-        self.name = name.capitalized
-        subBreeds = []
+    init(identifier: String) {
+        self.identifier = identifier
+        self.name = identifier.capitalized
     }
 }

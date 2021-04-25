@@ -10,14 +10,14 @@ import XCTest
 
 final class BreedTests: XCTestCase {
     func test_init_withDefaultSubBreed() {
-        let breed = Breed(name: "pug")
+        let breed = Breed(identifier: "pug")
         XCTAssertEqual(breed.name, "Pug")
-        XCTAssertTrue(breed.subBreeds.isEmpty)
+        XCTAssertEqual(breed.identifier, "pug")
     }
     
-    func test_init_capitalizesName() {
-        let breed = Breed(name: "pug", subBreeds: [Breed(name: "sub pug")])
-        XCTAssertEqual(breed.name, "Pug")
-        XCTAssertEqual(breed.subBreeds, [Breed(name: "sub pug")])
+    func test_init() {
+        let breed = Breed(identifier: "australian/shepherd", name: "Australian Shepherd")
+        XCTAssertEqual(breed.name, "Australian Shepherd")
+        XCTAssertEqual(breed.identifier, "australian/shepherd")
     }
 }

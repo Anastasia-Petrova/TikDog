@@ -19,7 +19,7 @@ final class BreedPhotosDataSourceTests: XCTestCase {
             initialState: .failed(WebError(message: "", code: 0)),
             getBreedPhotos: {
                 counter += 1
-                return WebService.mockSuccess.getBreedPhotos(Breed(name: "pug"))
+                return WebService.mockSuccess.getBreedPhotos(Breed(identifier: "pug"))
             }
         )
         XCTAssertNil(dataSource.photosRequestSubscription, "precondition")
@@ -120,7 +120,7 @@ final class BreedPhotosDataSourceTests: XCTestCase {
     
     private func makeDataSource(
         initialState: Loadable<PhotoPage> = .loading,
-        getBreedPhotos: @escaping () -> AnyPublisher<Result<PhotoPage, WebError>, Never> = { WebService.mockSuccess.getBreedPhotos(Breed(name: "pug")) }
+        getBreedPhotos: @escaping () -> AnyPublisher<Result<PhotoPage, WebError>, Never> = { WebService.mockSuccess.getBreedPhotos(Breed(identifier: "pug")) }
     ) -> BreedPhotosDataSource {
         BreedPhotosDataSource(
             collectionView: UICollectionView(frame: .zero, collectionViewLayout: BreedPhotosViewController.collectionLayout),

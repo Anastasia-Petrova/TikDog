@@ -18,7 +18,7 @@ final class BreedListDataSourceTests: XCTestCase {
         dataSource.state = .loading
         XCTAssertEqual(dataSource.tableView(UITableView(), numberOfRowsInSection: 0), 10)
         
-        dataSource.state = .loaded([Breed(name: "pug"), Breed(name: "shiba")])
+        dataSource.state = .loaded([Breed(identifier: "pug"), Breed(identifier: "shiba")])
         XCTAssertEqual(dataSource.tableView(UITableView(), numberOfRowsInSection: 0), 2)
     }
     
@@ -33,7 +33,7 @@ final class BreedListDataSourceTests: XCTestCase {
         dataSource.state = .loading
         XCTAssertTrue(getCell() is BreedCell.Placeholder)
         
-        dataSource.state = .loaded([Breed(name: "pug"), Breed(name: "shiba")])
+        dataSource.state = .loaded([Breed(identifier: "pug"), Breed(identifier: "shiba")])
         XCTAssertTrue(getCell() is BreedCell)
     }
     
@@ -62,8 +62,8 @@ final class BreedListDataSourceTests: XCTestCase {
         dataSource.state = .loading
         XCTAssertNil(dataSource.getBreed(at: IndexPath(row: 0, section: 0)))
         
-        dataSource.state = .loaded([Breed(name: "pug"), Breed(name: "shiba")])
-        XCTAssertEqual(dataSource.getBreed(at: IndexPath(row: 0, section: 0)), Breed(name: "pug"))
+        dataSource.state = .loaded([Breed(identifier: "pug"), Breed(identifier: "shiba")])
+        XCTAssertEqual(dataSource.getBreed(at: IndexPath(row: 0, section: 0)), Breed(identifier: "pug"))
     }
     
     func test_update() {
@@ -79,7 +79,7 @@ final class BreedListDataSourceTests: XCTestCase {
         XCTAssertFalse(dataSource.tableView.allowsSelection)
         XCTAssertFalse(dataSource.tableView.isScrollEnabled)
         
-        dataSource.state = .loaded([Breed(name: "pug"), Breed(name: "shiba")])
+        dataSource.state = .loaded([Breed(identifier: "pug"), Breed(identifier: "shiba")])
         dataSource.update()
         XCTAssertTrue(dataSource.tableView.allowsSelection)
         XCTAssertTrue(dataSource.tableView.isScrollEnabled)

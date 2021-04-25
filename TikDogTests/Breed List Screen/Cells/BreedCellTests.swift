@@ -11,7 +11,7 @@ final class BreedCellTests: XCTestCase {
     func test_setBreed_setsTitle() {
         let cell = BreedCell()
         XCTAssertNil(cell.title.text, "precondition")
-        cell.setBreed(Breed(name: "pug"))
+        cell.setBreed(Breed(identifier: "pug"))
         
         XCTAssertEqual(cell.title.text, "Pug")
     }

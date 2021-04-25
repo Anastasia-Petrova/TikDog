@@ -12,7 +12,7 @@ final class BreedPhotosViewControllerTests: XCTestCase {
     func test_viewDidLoad_setsDataSource() throws {
         let vc = BreedPhotosViewController(
             breedName: "Pug",
-            breedPhotosPublisher: { WebService.mockSuccess.getBreedPhotos(Breed(name: "pug")) },
+            breedPhotosPublisher: { WebService.mockSuccess.getBreedPhotos(Breed(identifier: "pug")) },
             loadImage: ImageLoader.mock.load
         )
         vc.loadViewIfNeeded()
@@ -25,7 +25,7 @@ final class BreedPhotosViewControllerTests: XCTestCase {
     func test_viewDidLoad_callsFetch() throws {
         let vc = BreedPhotosViewController(
             breedName: "Pug",
-            breedPhotosPublisher: { WebService.mockSuccess.getBreedPhotos(Breed(name: "pug")) },
+            breedPhotosPublisher: { WebService.mockSuccess.getBreedPhotos(Breed(identifier: "pug")) },
             loadImage: ImageLoader.mock.load
         )
         let spy = SpyCollectionDataSource()
@@ -38,7 +38,7 @@ final class BreedPhotosViewControllerTests: XCTestCase {
     func test_setImage_callsSetImage_onDataSource() throws {
         let vc = BreedPhotosViewController(
             breedName: "Pug",
-            breedPhotosPublisher: { WebService.mockSuccess.getBreedPhotos(Breed(name: "pug")) },
+            breedPhotosPublisher: { WebService.mockSuccess.getBreedPhotos(Breed(identifier: "pug")) },
             loadImage: ImageLoader.mock.load
         )
         let spy = SpyCollectionDataSource()

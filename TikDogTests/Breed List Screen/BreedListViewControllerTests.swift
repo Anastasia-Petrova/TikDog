@@ -18,11 +18,11 @@ final class BreedListViewControllerTests: XCTestCase {
                 capturedBreeds.append(breed)
             }
         )
-        vc.dataSource.state = .loaded([Breed(name: "pug")])
+        vc.dataSource.state = .loaded([Breed(identifier: "pug")])
         
         vc.tableView(UITableView(), didSelectRowAt: IndexPath(item: 0, section: 0))
         
-        XCTAssertEqual(capturedBreeds, [Breed(name: "pug")])
+        XCTAssertEqual(capturedBreeds, [Breed(identifier: "pug")])
     }
     
     func test_viewDidLoad_setsDataSource() throws {

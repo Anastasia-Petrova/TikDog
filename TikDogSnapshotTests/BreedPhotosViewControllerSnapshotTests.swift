@@ -15,7 +15,7 @@ final class BreedPhotosViewControllerSnapshotTests: XCTestCase {
     func test_loading() {
         let vc = BreedPhotosViewController(
             breedName: "Pug",
-            breedPhotosPublisher: { WebService.mockSuccess.getBreedPhotos(Breed(name: "pug")) },
+            breedPhotosPublisher: { WebService.mockSuccess.getBreedPhotos(Breed(identifier: "pug")) },
             loadImage: ImageLoader.mock.load
         )
         vc.loadViewIfNeeded()
@@ -27,7 +27,7 @@ final class BreedPhotosViewControllerSnapshotTests: XCTestCase {
     func test_loaded() {
         let vc = BreedPhotosViewController(
             breedName: "Pug",
-            breedPhotosPublisher: { WebService.mockSuccess.getBreedPhotos(Breed(name: "pug")) },
+            breedPhotosPublisher: { WebService.mockSuccess.getBreedPhotos(Breed(identifier: "pug")) },
             loadImage: ImageLoader.mock.load
         )
         vc.loadViewIfNeeded()
@@ -40,7 +40,7 @@ final class BreedPhotosViewControllerSnapshotTests: XCTestCase {
     func test_failed() {
         let vc = BreedPhotosViewController(
             breedName: "Pug",
-            breedPhotosPublisher: { WebService.mockSuccess.getBreedPhotos(Breed(name: "pug")) },
+            breedPhotosPublisher: { WebService.mockSuccess.getBreedPhotos(Breed(identifier: "pug")) },
             loadImage: ImageLoader.mock.load
         )
         vc.loadViewIfNeeded()

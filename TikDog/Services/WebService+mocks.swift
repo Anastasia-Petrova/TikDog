@@ -36,12 +36,12 @@ extension WebService {
 extension BreedListResponse {
     static var mock: BreedListResponse = {
         BreedListResponse(breeds: [
-            Breed(name: "affenpinscher"),
-            Breed(name: "african"),
-            Breed(name: "airedale"),
-            Breed(name: "akita"),
-            Breed(name: "appenzeller"),
-            Breed(name: "australian", subBreeds: [Breed(name: "shepherd")])
+            Breed(identifier: "affenpinscher"),
+            Breed(identifier: "african"),
+            Breed(identifier: "airedale"),
+            Breed(identifier: "akita"),
+            Breed(identifier: "appenzeller"),
+            Breed(identifier: "australian/shepherd", name: "Australian Shepherd")
         ])
     }()
 }

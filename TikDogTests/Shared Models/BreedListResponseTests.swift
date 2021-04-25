@@ -11,17 +11,15 @@ import XCTest
 final class BreedListResponseTests: XCTestCase {
     func test_decoding() throws {
         let expected = BreedListResponse(breeds: [
-            Breed(name: "affenpinscher", subBreeds: []),
-            Breed(name: "african", subBreeds: []),
-            Breed(name: "airedale", subBreeds: []),
-            Breed(name: "akita", subBreeds: []),
-            Breed(name: "appenzeller", subBreeds: []),
-            Breed(name: "australian", subBreeds: [Breed(name: "shepherd")]),
-            Breed(name: "bulldog", subBreeds: [
-                Breed(name: "boston"),
-                Breed(name: "english"),
-                Breed(name: "french")
-            ]),
+            Breed(identifier: "affenpinscher", name: "Affenpinscher"),
+            Breed(identifier: "african", name: "African"),
+            Breed(identifier: "airedale", name: "Airedale"),
+            Breed(identifier: "akita", name: "Akita"),
+            Breed(identifier: "appenzeller", name: "Appenzeller"),
+            Breed(identifier: "australian/shepherd", name: "Shepherd Australian"),
+            Breed(identifier: "bulldog/boston", name: "Boston Bulldog"),
+            Breed(identifier: "bulldog/english", name: "English Bulldog"),
+            Breed(identifier: "bulldog/french", name: "French Bulldog"),
         ])
         let jsonData = """
         {
@@ -49,3 +47,4 @@ final class BreedListResponseTests: XCTestCase {
         XCTAssertEqual(actual, expected)
     }
 }
+

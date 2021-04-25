@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  TikDog
 //
-//  Created by Anastasia Petrova on 20/04/2021.
+//  Created by Anastasia Petrova on 25/04/2021.
 //
 
 import Combine

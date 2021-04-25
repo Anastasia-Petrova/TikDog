@@ -2,7 +2,7 @@
 //  DogAPIService.swift
 //  TikDog
 //
-//  Created by Anastasia Petrova on 20/04/2021.
+//  Created by Anastasia Petrova on 25/04/2021.
 //
 
 import Combine
@@ -34,6 +34,7 @@ extension WebService {
     ) -> AnyPublisher<Result<T, WebError>, Never> {
         session
             .dataTaskPublisher(for: request)
+//            Uncomment to experience shimmer effect. Use bad network conditioner otherwise.
 //            .delay(for: 4, scheduler: DispatchQueue.main)
             .tryMap { output in
                 guard let response = output.response as? HTTPURLResponse else {
@@ -91,8 +92,9 @@ enum Endpoint {
     }
     
     func getRequest(for baseURL: URL) -> URLRequest {
-        var r = URLRequest(url: baseURL.appendingPathComponent(stringValue))
-//        r.timeoutInterval = 5
-        return r
+        let request = URLRequest(url: baseURL.appendingPathComponent(stringValue))
+//        Uncomment to get fast failures with bad network conditioner.
+//        request.timeoutInterval = 5
+        return request
     }
 }

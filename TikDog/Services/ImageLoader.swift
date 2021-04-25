@@ -2,7 +2,7 @@
 //  ImageLoader.swift
 //  TikDog
 //
-//  Created by Anastasia Petrova on 24/04/2021.
+//  Created by Anastasia Petrova on 25/04/2021.
 //
 
 import Combine
@@ -29,6 +29,6 @@ extension ImageLoader {
 
 extension ImageLoader {
     static let mock = ImageLoader { _ in
-        Just(UIImage(named: "avatar")).eraseToAnyPublisher()
+        Just(UIImage(named: "dog")).eraseToAnyPublisher()
     }
 }

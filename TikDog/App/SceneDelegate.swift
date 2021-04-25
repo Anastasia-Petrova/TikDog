@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  TikDog
 //
-//  Created by Anastasia Petrova on 20/04/2021.
+//  Created by Anastasia Petrova on 25/04/2021.
 //
 
 import Combine
@@ -16,6 +16,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: scene)
+        
+//        replace with mocks if needed
+//        let app = App(service: .mockSuccess, imageLoader: .mock)
+        
         let app = App(
             service: .live(baseURL: URL(string: "https://dog.ceo/api")!),
             imageLoader: .live

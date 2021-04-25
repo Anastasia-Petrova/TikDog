@@ -2,7 +2,7 @@
 //  App.swift
 //  TikDog
 //
-//  Created by Anastasia Petrova on 21/04/2021.
+//  Created by Anastasia Petrova on 25/04/2021.
 //
 
 import UIKit

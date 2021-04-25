@@ -42,16 +42,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6D268346262F7E36007591E2"
-               BuildableName = "TikDogUITests.xctest"
-               BlueprintName = "TikDogUITests"
-               ReferencedContainer = "container:TikDog.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "6DFE808C2636218400FA95F1"
                BuildableName = "TikDogSnapshotTests.xctest"
                BlueprintName = "TikDogSnapshotTests"

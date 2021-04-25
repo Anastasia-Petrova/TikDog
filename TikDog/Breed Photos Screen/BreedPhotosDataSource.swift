@@ -5,18 +5,18 @@ final class BreedPhotosDataSource: UICollectionViewDiffableDataSource<BreedPhoto
     typealias Row = BreedPhotosViewController.Row
     typealias Section = BreedPhotosViewController.Section
     
-    var state: Loadable<PhotosPage> = .loading {
+    var state: Loadable<Photos> = .loading {
         didSet {
             updateCollectionView()
         }
     }
-    let getBreedPhotos: () -> AnyPublisher<Result<PhotosPage, WebError>, Never>
+    let getBreedPhotos: () -> AnyPublisher<Result<Photos, WebError>, Never>
     let collectionView: UICollectionView
     var subscription: AnyCancellable?
     
     init(
         collectionView: UICollectionView,
-        getBreedPhotos: @escaping () -> AnyPublisher<Result<PhotosPage, WebError>, Never>,
+        getBreedPhotos: @escaping () -> AnyPublisher<Result<Photos, WebError>, Never>,
         loadImage: @escaping (URL) -> AnyPublisher<UIImage?, Never>,
         retryAction: @escaping () -> Void,
         setImage: @escaping (UIImage, IndexPath) -> Void
@@ -108,9 +108,13 @@ final class BreedPhotosDataSource: UICollectionViewDiffableDataSource<BreedPhoto
             
         case let .loaded(page):
             snapshot.appendSections(Section.allCases)
-            snapshot.appendItems([BreedPhotosViewController.Row.item(page.topSection.item)], toSection: Section.top)
-            snapshot.appendItems(page.middleSection?.items.map(Row.item) ?? [], toSection: Section.middle)
-            snapshot.appendItems(page.bottomSection?.items.map(Row.item) ?? [], toSection: Section.bottom)
+            snapshot.appendItems([BreedPhotosViewController.Row.item(page.topItem)], toSection: Section.top)
+            snapshot.appendItems(page.middleSection.map(Row.item), toSection: Section.middle)
+            snapshot.appendItems(page.bottomSection.map(Row.item), toSection: Section.bottom)
+            
+//            snapshot.appendItems([BreedPhotosViewController.Row.item(page.topSection.item)], toSection: Section.top)
+//            snapshot.appendItems(page.middleSection?.items.map(Row.item) ?? [], toSection: Section.middle)
+//            snapshot.appendItems(page.bottomSection?.items.map(Row.item) ?? [], toSection: Section.bottom)
             
         case let .failed(error):
             snapshot.appendSections([Section.top])
@@ -136,10 +140,85 @@ final class BreedPhotosDataSource: UICollectionViewDiffableDataSource<BreedPhoto
     func setImage(_ image: UIImage, indexPath: IndexPath) {
         switch state {
         case var .loaded(page):
-            page[indexPath]?.image = image
+            page[indexPath].image = image
             state = .loaded(page)
         default:
             break
+        }
+    }
+}
+
+struct Photos {
+    var topItem: Item
+    var middleSection: [Item]
+    var bottomSection: [Item]
+    
+    static let numberOfItemsInTopSecton = 1
+    static let numberOfItemsInMiddleSecton = 6
+    static let numberOfItemsInBottomSecton = 3
+    
+    subscript(indexPath: IndexPath) -> Item {
+        get {
+            switch (indexPath.section, indexPath.row) {
+            case (0, 0..<Self.numberOfItemsInTopSecton):
+                return topItem
+                
+            case (1, 0..<Self.numberOfItemsInMiddleSecton):
+                return middleSection[indexPath.row]
+                
+            case (2, 0..<Self.numberOfItemsInBottomSecton):
+                return bottomSection[indexPath.row]
+                
+            default:
+                fatalError("Index out of range")
+            }
+        }
+        set {
+            switch (indexPath.section, indexPath.row) {
+            case (0, 0..<Self.numberOfItemsInTopSecton):
+                topItem = newValue
+                
+            case (1, 0..<Self.numberOfItemsInMiddleSecton):
+                
+                middleSection[indexPath.row] = newValue
+            case (2, 0..<Self.numberOfItemsInBottomSecton):
+                bottomSection[indexPath.row] = newValue
+                
+            default:
+                fatalError("Index out of range")
+            }
+        }
+    }
+}
+
+extension Photos: Decodable {
+    private enum CodingKeys: String, CodingKey {
+        case message
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let urls = try container.decode([URL].self, forKey: .message)
+        
+        guard let firstURL = urls.first else {
+            throw DecodingError.typeMismatch(
+                PhotosPage.self,
+                DecodingError.Context(codingPath: [], debugDescription: "Expected to get at least one URL")
+            )
+        }
+        topItem = Item(url: firstURL)
+        middleSection = []
+        bottomSection = []
+        for (index, url) in urls.enumerated() {
+            switch index {
+            case (1...6):
+                middleSection.append(Item(url: url))
+                
+            case (7...10):
+                bottomSection.append(Item(url: url))
+            default:
+                break
+            }
         }
     }
 }

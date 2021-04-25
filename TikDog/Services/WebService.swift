@@ -10,7 +10,7 @@ import Foundation
 
 struct WebService {
     var getBreedsList: () -> AnyPublisher<Result<BreedListResponse, WebError>, Never>
-    var getBreedPhotos: (Breed) -> AnyPublisher<Result<PhotosPage, WebError>, Never>
+    var getBreedPhotos: (Breed) -> AnyPublisher<Result<Photos, WebError>, Never>
 }
 
 extension WebService {

@@ -17,11 +17,11 @@ final class BreedPhotosViewController: UICollectionViewController {
         setImage: { [weak self] in self?.setImage($0, indexPath: $1) }
     )
 
-    let breedPhotosPublisher: () -> AnyPublisher<Result<PhotosPage, WebError>, Never>
+    let breedPhotosPublisher: () -> AnyPublisher<Result<Photos, WebError>, Never>
     let loadImage: (URL) -> AnyPublisher<UIImage?, Never>
     
     init(
-        breedPhotosPublisher: @escaping () -> AnyPublisher<Result<PhotosPage, WebError>, Never>,
+        breedPhotosPublisher: @escaping () -> AnyPublisher<Result<Photos, WebError>, Never>,
         loadImage: @escaping (URL) -> AnyPublisher<UIImage?, Never>
     ) {
         self.breedPhotosPublisher = breedPhotosPublisher

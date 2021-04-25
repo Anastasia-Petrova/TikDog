@@ -14,10 +14,11 @@ extension WebService {
             Just(.success(BreedListResponse.mock))
                 .eraseToAnyPublisher()
         },
-        getBreedPhotos: { _ in
-            Just(.success(PhotosPage.mock))
-                .eraseToAnyPublisher()
-        }
+        getBreedPhotos: { _ in genericError() }
+//        getBreedPhotos: { _ in
+//            Just(.success(PhotosPage.mock))
+//                .eraseToAnyPublisher()
+//        }
     )
     
     static let mockFailure = WebService(

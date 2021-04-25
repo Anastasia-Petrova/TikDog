@@ -5,8 +5,10 @@
 //  Created by Anastasia Petrova on 25/04/2021.
 //
 
-import Foundation
+import UIKit
 
+// This type can be further improved to achieve more type safety.
+// We can encode number of items for each section.
 struct PhotoPage: Equatable {
     var topItem: PhotoItem
     var middleSection: [PhotoItem]
@@ -86,4 +88,9 @@ extension PhotoPage {
             }
         }
     }
+}
+
+struct PhotoItem: Hashable {
+    let url: URL
+    var image: UIImage?
 }

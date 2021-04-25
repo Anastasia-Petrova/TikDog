@@ -10,7 +10,7 @@ import Foundation
 
 struct WebService {
     var getBreedsList: () -> AnyPublisher<Result<BreedListResponse, WebError>, Never>
-    var getBreedPhotos: (Breed) -> AnyPublisher<Result<Photos, WebError>, Never>
+    var getBreedPhotos: (Breed) -> AnyPublisher<Result<PhotoPage, WebError>, Never>
 }
 
 extension WebService {
@@ -20,7 +20,7 @@ extension WebService {
                 get(request: Endpoint.breedList.getRequest(for: baseURL))
             },
             getBreedPhotos: { breed in
-                get(request: Endpoint.breedPhotos(breedName: breed.name).getRequest(for: baseURL))
+                get(request: Endpoint.breedPhotos(breedName: breed.name.lowercased()).getRequest(for: baseURL))
             }
         )
     }
@@ -34,7 +34,7 @@ extension WebService {
     ) -> AnyPublisher<Result<T, WebError>, Never> {
         session
             .dataTaskPublisher(for: request)
-            .delay(for: 4, scheduler: DispatchQueue.main)
+//            .delay(for: 4, scheduler: DispatchQueue.main)
             .tryMap { output in
                 guard let response = output.response as? HTTPURLResponse else {
                     throw WebError(
@@ -71,7 +71,7 @@ extension WebError {
     }
 }
 
-struct WebError: Decodable, Swift.Error {
+struct WebError: Decodable, Swift.Error, Equatable {
     let message: String
     let code: Int
 }
@@ -92,7 +92,7 @@ enum Endpoint {
     
     func getRequest(for baseURL: URL) -> URLRequest {
         var r = URLRequest(url: baseURL.appendingPathComponent(stringValue))
-        r.timeoutInterval = 5
+//        r.timeoutInterval = 5
         return r
     }
 }

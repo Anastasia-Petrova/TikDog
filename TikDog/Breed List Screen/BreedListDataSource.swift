@@ -29,7 +29,12 @@ final class BreedListDataSource: NSObject, UITableViewDataSource, TableDataSourc
         self.tableView = tableView
         self.breedsListPublisher = breedsListPublisher
         self.retryAction = retryAction
+        
         super.init()
+        
+        tableView.register(BreedCell.self, forCellReuseIdentifier: BreedCell.identifier)
+        tableView.register(BreedCell.Placeholder.self, forCellReuseIdentifier: BreedCell.Placeholder.identifier)
+        tableView.register(ErrorMessageCell.self, forCellReuseIdentifier: ErrorMessageCell.identifier)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -51,25 +56,25 @@ final class BreedListDataSource: NSObject, UITableViewDataSource, TableDataSourc
             return makeErrorMessageCell(tableView, indexPath: indexPath, error: error)
             
         case .loading:
-            return makePlaceholerCell(tableView)
+            return makePlaceholerCell(tableView, indexPath: indexPath)
             
         case let .loaded(breeds):
             return makeBreedCell(tableView, indexPath: indexPath, breed: breeds[indexPath.row])
         }
     }
     
-    func makeErrorMessageCell(_ tableView: UITableView, indexPath: IndexPath, error: WebError) -> UITableViewCell {
+    private func makeErrorMessageCell(_ tableView: UITableView, indexPath: IndexPath, error: WebError) -> ErrorMessageCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ErrorMessageCell.identifier, for: indexPath) as! ErrorMessageCell
         cell.setMessage(error.message)
         cell.didTapRetryButton = retryAction
         return cell
     }
     
-    func makePlaceholerCell(_ tableView: UITableView) -> UITableViewCell {
-        return tableView.dequeueReusableCell(withIdentifier: BreedCell.Placeholder.identifier) as! BreedCell.Placeholder
+    private func makePlaceholerCell(_ tableView: UITableView, indexPath: IndexPath) -> BreedCell.Placeholder {
+        return tableView.dequeueReusableCell(withIdentifier: BreedCell.Placeholder.identifier, for: indexPath) as! BreedCell.Placeholder
     }
     
-    func makeBreedCell(_ tableView: UITableView, indexPath: IndexPath, breed: Breed) -> UITableViewCell {
+    private func makeBreedCell(_ tableView: UITableView, indexPath: IndexPath, breed: Breed) -> BreedCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: BreedCell.identifier, for: indexPath) as! BreedCell
         cell.setBreed(breed)
         return cell

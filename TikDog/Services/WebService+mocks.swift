@@ -15,7 +15,7 @@ extension WebService {
                 .eraseToAnyPublisher()
         },
         getBreedPhotos: { _ in
-            Just(.success(Photos.mock))
+            Just(.success(PhotoPage.mock))
                 .eraseToAnyPublisher()
         }
     )
@@ -46,9 +46,9 @@ extension BreedListResponse {
     }()
 }
 
-extension Photos {
-    static var mock: Photos = {
-        Photos(
+extension PhotoPage {
+    static var mock: PhotoPage = {
+        PhotoPage(
             topItem: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_13742.jpg")!),
             middleSection: [
                 .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_3059.jpg")!),

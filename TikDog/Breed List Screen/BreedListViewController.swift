@@ -39,9 +39,6 @@ final class BreedListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(BreedCell.self, forCellReuseIdentifier: BreedCell.identifier)
-        tableView.register(BreedCell.Placeholder.self, forCellReuseIdentifier: BreedCell.Placeholder.identifier)
-        tableView.register(ErrorMessageCell.self, forCellReuseIdentifier: ErrorMessageCell.identifier)
         tableView.dataSource = dataSource
         
         fetchBreedList()

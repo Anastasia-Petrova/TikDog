@@ -8,8 +8,14 @@
 import Combine
 import UIKit
 
+protocol CollectionDataSource: AnyObject, UICollectionViewDataSource {
+    func fetch()
+    func setImage(_ image: UIImage, indexPath: IndexPath)
+    var state: Loadable<PhotoPage> { get set }
+}
+
 final class BreedPhotosViewController: UICollectionViewController {
-    lazy var dataSource = BreedPhotosDataSource(
+    lazy var dataSource: CollectionDataSource = BreedPhotosDataSource(
         collectionView: collectionView,
         getBreedPhotos: breedPhotosPublisher,
         loadImage: loadImage,
@@ -17,11 +23,11 @@ final class BreedPhotosViewController: UICollectionViewController {
         setImage: { [weak self] in self?.setImage($0, indexPath: $1) }
     )
 
-    let breedPhotosPublisher: () -> AnyPublisher<Result<Photos, WebError>, Never>
+    let breedPhotosPublisher: () -> AnyPublisher<Result<PhotoPage, WebError>, Never>
     let loadImage: (URL) -> AnyPublisher<UIImage?, Never>
     
     init(
-        breedPhotosPublisher: @escaping () -> AnyPublisher<Result<Photos, WebError>, Never>,
+        breedPhotosPublisher: @escaping () -> AnyPublisher<Result<PhotoPage, WebError>, Never>,
         loadImage: @escaping (URL) -> AnyPublisher<UIImage?, Never>
     ) {
         self.breedPhotosPublisher = breedPhotosPublisher
@@ -35,14 +41,11 @@ final class BreedPhotosViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.register(BreedPhotoCell.self, forCellWithReuseIdentifier: BreedPhotoCell.identifier)
-        collectionView.register(BreedPhotoCell.Placeholder.self, forCellWithReuseIdentifier: BreedPhotoCell.Placeholder.identifier)
-        collectionView.register(BreedPhotoErrorCell.self, forCellWithReuseIdentifier: BreedPhotoErrorCell.identifier)
-        
         collectionView.dataSource = dataSource
         collectionView.showsVerticalScrollIndicator = false
         collectionView.allowsSelection = false
         collectionView.backgroundColor = .systemGroupedBackground
+        
         fetchBreedPhotos()
     }
     

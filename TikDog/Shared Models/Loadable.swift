@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Loadable<Content> {
+enum Loadable<Content: Equatable>: Equatable {
     case failed(WebError)
     case loaded(Content)
     case loading

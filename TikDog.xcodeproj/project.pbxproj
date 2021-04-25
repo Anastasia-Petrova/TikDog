@@ -41,6 +41,12 @@
 		6DFE802D2635FA5900FA95F1 /* BreedCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE802C2635FA5900FA95F1 /* BreedCellTests.swift */; };
 		6DFE80352635FACD00FA95F1 /* ErrorMessageCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE80342635FACD00FA95F1 /* ErrorMessageCellTests.swift */; };
 		6DFE803A2635FB8200FA95F1 /* BreedListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE80392635FB8200FA95F1 /* BreedListViewControllerTests.swift */; };
+		6DFE803F263606C900FA95F1 /* BreedListDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE803E263606C900FA95F1 /* BreedListDataSourceTests.swift */; };
+		6DFE804726360C8100FA95F1 /* BreedPhotoErrorCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE804626360C8100FA95F1 /* BreedPhotoErrorCellTests.swift */; };
+		6DFE805526360EB700FA95F1 /* BreedPhotosViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE805426360EB700FA95F1 /* BreedPhotosViewControllerTests.swift */; };
+		6DFE805A2636126E00FA95F1 /* BreedPhotosDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE80592636126E00FA95F1 /* BreedPhotosDataSourceTests.swift */; };
+		6DFE806C263615E500FA95F1 /* PhotoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE805E2636156400FA95F1 /* PhotoPage.swift */; };
+		6DFE807426361C9C00FA95F1 /* PhotoPageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE807326361C9C00FA95F1 /* PhotoPageTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +107,12 @@
 		6DFE802C2635FA5900FA95F1 /* BreedCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedCellTests.swift; sourceTree = "<group>"; };
 		6DFE80342635FACD00FA95F1 /* ErrorMessageCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessageCellTests.swift; sourceTree = "<group>"; };
 		6DFE80392635FB8200FA95F1 /* BreedListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListViewControllerTests.swift; sourceTree = "<group>"; };
+		6DFE803E263606C900FA95F1 /* BreedListDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListDataSourceTests.swift; sourceTree = "<group>"; };
+		6DFE804626360C8100FA95F1 /* BreedPhotoErrorCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotoErrorCellTests.swift; sourceTree = "<group>"; };
+		6DFE805426360EB700FA95F1 /* BreedPhotosViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotosViewControllerTests.swift; sourceTree = "<group>"; };
+		6DFE80592636126E00FA95F1 /* BreedPhotosDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotosDataSourceTests.swift; sourceTree = "<group>"; };
+		6DFE805E2636156400FA95F1 /* PhotoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPage.swift; sourceTree = "<group>"; };
+		6DFE807326361C9C00FA95F1 /* PhotoPageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPageTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +183,7 @@
 				6DFE7FFB2635EE1B00FA95F1 /* Shared Models */,
 				6DFE80212635F6A700FA95F1 /* Shared Views */,
 				6DFE802A2635FA4400FA95F1 /* Breed List Screen */,
+				6DFE804426360C7000FA95F1 /* Breed Photos Screen */,
 				6D268367262F80CD007591E2 /* DogAPIServiceTests.swift */,
 				6D268342262F7E36007591E2 /* Info.plist */,
 				6D268340262F7E36007591E2 /* TikDogTests.swift */,
@@ -201,8 +214,8 @@
 			isa = PBXGroup;
 			children = (
 				6D75EFBA26359C52003D09F3 /* Cells */,
-				6D26832D262F7E35007591E2 /* BreedListViewController.swift */,
 				6D9163D12635CDDD00A957F3 /* BreedListDataSource.swift */,
+				6D26832D262F7E35007591E2 /* BreedListViewController.swift */,
 			);
 			path = "Breed List Screen";
 			sourceTree = "<group>";
@@ -214,6 +227,7 @@
 				6D75EFA4263399C9003D09F3 /* BreedPhotosDataSource.swift */,
 				6D26836C262F8152007591E2 /* BreedPhotosViewController.swift */,
 				6D9163C02635CB9000A957F3 /* BreedPhotosViewController+collectionLayout.swift */,
+				6DFE805E2636156400FA95F1 /* PhotoPage.swift */,
 			);
 			path = "Breed Photos Screen";
 			sourceTree = "<group>";
@@ -297,6 +311,7 @@
 			children = (
 				6DFE802B2635FA4B00FA95F1 /* Cells */,
 				6DFE80392635FB8200FA95F1 /* BreedListViewControllerTests.swift */,
+				6DFE803E263606C900FA95F1 /* BreedListDataSourceTests.swift */,
 			);
 			path = "Breed List Screen";
 			sourceTree = "<group>";
@@ -306,6 +321,25 @@
 			children = (
 				6DFE802C2635FA5900FA95F1 /* BreedCellTests.swift */,
 				6DFE80342635FACD00FA95F1 /* ErrorMessageCellTests.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		6DFE804426360C7000FA95F1 /* Breed Photos Screen */ = {
+			isa = PBXGroup;
+			children = (
+				6DFE804526360C7700FA95F1 /* Cells */,
+				6DFE805426360EB700FA95F1 /* BreedPhotosViewControllerTests.swift */,
+				6DFE80592636126E00FA95F1 /* BreedPhotosDataSourceTests.swift */,
+				6DFE807326361C9C00FA95F1 /* PhotoPageTests.swift */,
+			);
+			path = "Breed Photos Screen";
+			sourceTree = "<group>";
+		};
+		6DFE804526360C7700FA95F1 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				6DFE804626360C8100FA95F1 /* BreedPhotoErrorCellTests.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -455,6 +489,7 @@
 				6DA918632635E2FA00810234 /* PhotoItem.swift in Sources */,
 				6D404F432630E24500ED67CF /* ErrorMessageCell.swift in Sources */,
 				6D00E9672635A9B8008EF6A1 /* BreedPhotoErrorCell.swift in Sources */,
+				6DFE806C263615E500FA95F1 /* PhotoPage.swift in Sources */,
 				6D404F372630E11B00ED67CF /* App.swift in Sources */,
 				6D75EFB626359BE6003D09F3 /* ShimmerView.swift in Sources */,
 				6D9163E12635D4EB00A957F3 /* Loadable.swift in Sources */,
@@ -467,12 +502,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DFE807426361C9C00FA95F1 /* PhotoPageTests.swift in Sources */,
 				6DFE800A2635EEF200FA95F1 /* BreedListResponseTests.swift in Sources */,
+				6DFE803F263606C900FA95F1 /* BreedListDataSourceTests.swift in Sources */,
+				6DFE805A2636126E00FA95F1 /* BreedPhotosDataSourceTests.swift in Sources */,
 				6DFE7FFD2635EE2A00FA95F1 /* BreedTests.swift in Sources */,
+				6DFE804726360C8100FA95F1 /* BreedPhotoErrorCellTests.swift in Sources */,
 				6D268341262F7E36007591E2 /* TikDogTests.swift in Sources */,
 				6DFE803A2635FB8200FA95F1 /* BreedListViewControllerTests.swift in Sources */,
 				6D268368262F80CD007591E2 /* DogAPIServiceTests.swift in Sources */,
 				6DFE802D2635FA5900FA95F1 /* BreedCellTests.swift in Sources */,
+				6DFE805526360EB700FA95F1 /* BreedPhotosViewControllerTests.swift in Sources */,
 				6DFE80352635FACD00FA95F1 /* ErrorMessageCellTests.swift in Sources */,
 				6DFE801D2635F1C300FA95F1 /* ShimmerViewTests.swift in Sources */,
 				6DFE80232635F6D900FA95F1 /* ErrorViewTests.swift in Sources */,

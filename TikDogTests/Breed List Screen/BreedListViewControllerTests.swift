@@ -25,17 +25,6 @@ final class BreedListViewControllerTests: XCTestCase {
         XCTAssertEqual(capturedBreeds, [Breed(name: "pug")])
     }
     
-    func test_viewDidLoad_registersCells() throws {
-        let vc = BreedListViewController(
-            breedListPublisher: WebService.mockSuccess.getBreedsList,
-            didSelectBreed: { _ in }
-        )
-        vc.loadViewIfNeeded()
-        XCTAssertTrue(vc.tableView.dequeueReusableCell(withIdentifier: BreedCell.identifier) is BreedCell)
-        XCTAssertTrue(vc.tableView.dequeueReusableCell(withIdentifier: BreedCell.Placeholder.identifier) is BreedCell.Placeholder)
-        XCTAssertTrue(vc.tableView.dequeueReusableCell(withIdentifier: ErrorMessageCell.identifier) is ErrorMessageCell)
-    }
-    
     func test_viewDidLoad_setsDataSource() throws {
         let vc = BreedListViewController(
             breedListPublisher: WebService.mockSuccess.getBreedsList,
@@ -61,7 +50,7 @@ final class BreedListViewControllerTests: XCTestCase {
     }
 }
 
-final class SpyTableDataSource: NSObject, TableDataSource {
+private final class SpyTableDataSource: NSObject, TableDataSource {
     var fetchCallCount: Int = 0
     
     var state: Loadable<[Breed]> = .loading

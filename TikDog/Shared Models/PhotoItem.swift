@@ -10,9 +10,4 @@ import UIKit
 struct PhotoItem: Hashable {
     let url: URL
     var image: UIImage?
-    
-    init(url: URL) {
-        self.url = url
-        image = nil
-    }
 }

@@ -9,7 +9,7 @@ import Combine
 import UIKit
 
 final class BreedListViewController: UITableViewController {
-    lazy var dataSource = BreedListDataSource(
+    lazy var dataSource: TableDataSource = BreedListDataSource(
         initialState: .loading,
         tableView: tableView,
         breedListPublisher: breedListPublisher,
@@ -56,7 +56,6 @@ extension BreedListViewController {
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if let placeholderCell = cell as? BreedCell.Placeholder {
-            placeholderCell.layoutIfNeeded()
             placeholderCell.shimmerView.startAnimating()
         }
     }

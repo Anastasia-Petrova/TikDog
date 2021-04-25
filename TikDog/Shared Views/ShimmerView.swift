@@ -12,6 +12,8 @@ final class ShimmerView: UIView {
     let gradientLayer = CAGradientLayer()
     let borderWidth: CGFloat
     let isDiagonal: Bool
+    let darkColor = UIColor(white: 0.65, alpha: 1.0).cgColor
+    let lightColor = UIColor(white: 0.75, alpha: 1.0).cgColor
     
     init(borderWidth: CGFloat = 0, isDiagonal: Bool = false) {
         self.borderWidth = borderWidth
@@ -31,8 +33,6 @@ final class ShimmerView: UIView {
     }
     
     func addGradientLayer() {
-        let darkColor = UIColor(white: 0.65, alpha: 1.0).cgColor
-        let lightColor = UIColor(white: 0.75, alpha: 1.0).cgColor
         gradientLayer.borderWidth = borderWidth
         gradientLayer.borderColor = darkColor
         gradientLayer.frame = bounds
@@ -43,7 +43,7 @@ final class ShimmerView: UIView {
         layer.addSublayer(gradientLayer)
     }
     
-    func makeShimmerAnimation() -> CABasicAnimation {
+    static func makeShimmerAnimation() -> CABasicAnimation {
         let animation = CABasicAnimation(keyPath: "locations")
         animation.fromValue = [-1.0, -0.5, 0.0]
         animation.toValue = [1.0, 1.5, 2.0]
@@ -53,8 +53,8 @@ final class ShimmerView: UIView {
     }
     
     func startAnimating() {
-        let animation = makeShimmerAnimation()
-        gradientLayer.add(animation, forKey: animation.keyPath)
+        let animation = Self.makeShimmerAnimation()
+        gradientLayer.add(animation, forKey: "shimmering")
     }
 
     func stopAnimating() {

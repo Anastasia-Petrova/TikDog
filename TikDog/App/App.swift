@@ -10,7 +10,7 @@ import UIKit
 final class App {
     let service: WebService
     let imageLoader: ImageLoader
-    lazy var rootViewController = UINavigationController()
+    lazy var navigationController = UINavigationController()
     
     init(service: WebService, imageLoader: ImageLoader) {
         self.service = service
@@ -21,25 +21,28 @@ final class App {
         let breedListViewController = makeBreedListViewController(didSelectBreed: { [weak self] breed in
             guard let self = self else { return }
             
-            self.rootViewController.pushViewController(
+            self.navigationController.pushViewController(
                 self.makeBreedPhotosScreen(breed: breed),
                 animated: true
             )
         })
         
-        rootViewController.setViewControllers([breedListViewController], animated: false)
-        window.rootViewController = rootViewController
+        navigationController.setViewControllers([breedListViewController], animated: false)
+        window.rootViewController = navigationController
         window.makeKeyAndVisible()
     }
     
-    func makeBreedListViewController(didSelectBreed: @escaping (Breed) -> Void) -> UIViewController {
+    private func makeBreedListViewController(didSelectBreed: @escaping (Breed) -> Void) -> BreedListViewController {
         BreedListViewController(
             breedListPublisher: service.getBreedsList,
             didSelectBreed: didSelectBreed
         )
     }
     
-    func makeBreedPhotosScreen(breed: Breed) -> UIViewController {
-        BreedPhotosViewController(breedPhotosPublisher: { self.service.getBreedPhotos(breed) }, loadImage: imageLoader.load)
+    private func makeBreedPhotosScreen(breed: Breed) -> BreedPhotosViewController {
+        BreedPhotosViewController(
+            breedPhotosPublisher: { self.service.getBreedPhotos(breed) },
+            loadImage: imageLoader.load
+        )
     }
 }

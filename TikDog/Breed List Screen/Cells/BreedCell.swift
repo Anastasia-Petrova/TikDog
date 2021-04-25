@@ -16,6 +16,7 @@ final class BreedCell: UITableViewCell {
     let title: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
         label.font = .preferredFont(forTextStyle: BreedCell.textStyle)
         return label
     }()
@@ -56,6 +57,7 @@ extension BreedCell {
             let label = UILabel()
             label.numberOfLines = 0
             label.text = "Hello, World!"
+            label.adjustsFontForContentSizeCategory = true
             label.font = .preferredFont(forTextStyle: BreedCell.textStyle)
             label.sizeToFit()
             return label.bounds.height

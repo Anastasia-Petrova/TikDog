@@ -8,7 +8,13 @@
 import Combine
 import UIKit
 
-final class BreedListDataSource: NSObject, UITableViewDataSource {
+protocol TableDataSource: AnyObject, UITableViewDataSource {
+    func fetch()
+    func getBreed(at indexPath: IndexPath) -> Breed?
+    var state: Loadable<[Breed]> { get set }
+}
+
+final class BreedListDataSource: NSObject, UITableViewDataSource, TableDataSource {
     var state: Loadable<[Breed]> {
         didSet {
             update()
@@ -93,9 +99,11 @@ final class BreedListDataSource: NSObject, UITableViewDataSource {
         switch state {
         case .loaded:
             tableView.allowsSelection = true
+            tableView.isScrollEnabled = true
             
         case .failed, .loading:
             tableView.allowsSelection = false
+            tableView.isScrollEnabled = false
         }
         tableView.reloadData()
     }

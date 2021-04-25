@@ -1,7 +1,7 @@
 import Combine
 import UIKit
 
-final class BreedPhotosDataSource: UICollectionViewDiffableDataSource<BreedPhotosViewController.Section, BreedPhotosViewController.Row> {
+final class BreedPhotosDataSource: UICollectionViewDiffableDataSource<BreedPhotosViewController.Section, BreedPhotosViewController.Row>, DataSource {
     typealias Row = BreedPhotosViewController.Row
     typealias Section = BreedPhotosViewController.Section
     

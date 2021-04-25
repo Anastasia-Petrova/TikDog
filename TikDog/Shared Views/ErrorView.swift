@@ -22,7 +22,7 @@ final class ErrorView: UIView {
         didTapRetryButton?()
     }
     
-    let message: UILabel = {
+    let title: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -40,12 +40,12 @@ final class ErrorView: UIView {
     }
     
     func setUp() {
-        let stackView = UIStackView(arrangedSubviews: [message, retryButton])
+        let stackView = UIStackView(arrangedSubviews: [title, retryButton])
         stackView.axis = .vertical
         embedSubview(stackView, offset: 16)
     }
     
     func setMessage(_ text: String) {
-        message.text = text
+        title.text = text
     }
 }

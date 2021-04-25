@@ -7,33 +7,19 @@
 
 import Foundation
 
-struct Breed: Identifiable, Hashable {
-    var id = UUID()
+struct Breed: Hashable {
     let name: String
     let subBreeds: [Breed]
+    
+    init(name: String, subBreeds: [Breed]) {
+        self.name = name.capitalized
+        self.subBreeds = subBreeds
+    }
 }
 
 extension Breed {
     init(name: String) {
-        self.name = name
+        self.name = name.capitalized
         subBreeds = []
-    }
-}
-
-struct BreedListResponse {
-    let breeds: [Breed]
-}
-
-extension BreedListResponse: Decodable {
-    private enum CodingKeys: String, CodingKey {
-        case message
-    }
-    
-    init(from decoder: Decoder) throws {
-        breeds = try decoder
-            .container(keyedBy: CodingKeys.self)
-            .decode(Dictionary<String, [String]>.self, forKey: .message)
-            .map { Breed(name: $0, subBreeds: $1.map(Breed.init)) }
-            .sorted { $0.name < $1.name}
     }
 }

@@ -19,5 +19,14 @@ Interface Builder approach. All View Controller dependencies are passed to inits
 Breeds List is a simple table view.
 Breed Photos is a pretty advanced Instagram style collection view. Uses diffable data source.
 
+Accessibility: 
+UI supports Dynamic Fonts. Navigate to Setting/Accessibility/Display & Text Size/Larger Text.
+Shimmers also respect Dynamic Fonts.
+
 Dependencies:
 Snapshot testing library - https://github.com/pointfreeco/swift-snapshot-testing.git
+
+
+Error Handling:
+Both screens have error states and support Retry functionality.
+Refer to file Network Conditioner Test.mov for demonstration.

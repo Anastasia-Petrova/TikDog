@@ -5,18 +5,18 @@ final class BreedPhotosDataSource: UICollectionViewDiffableDataSource<BreedPhoto
     typealias Row = BreedPhotosViewController.Row
     typealias Section = BreedPhotosViewController.Section
     
-    var state: Loadable<Page> = .loading {
+    var state: Loadable<PhotosPage> = .loading {
         didSet {
             updateCollectionView()
         }
     }
-    let getBreedPhotos: () -> AnyPublisher<Result<Page, WebError>, Never>
+    let getBreedPhotos: () -> AnyPublisher<Result<PhotosPage, WebError>, Never>
     let collectionView: UICollectionView
     var subscription: AnyCancellable?
     
     init(
         collectionView: UICollectionView,
-        getBreedPhotos: @escaping () -> AnyPublisher<Result<Page, WebError>, Never>,
+        getBreedPhotos: @escaping () -> AnyPublisher<Result<PhotosPage, WebError>, Never>,
         loadImage: @escaping (URL) -> AnyPublisher<UIImage?, Never>,
         retryAction: @escaping () -> Void,
         setImage: @escaping (UIImage, IndexPath) -> Void
@@ -102,9 +102,9 @@ final class BreedPhotosDataSource: UICollectionViewDiffableDataSource<BreedPhoto
                 (0..<count).map { _ in Row.placeholder(UUID()) }
             }
             snapshot.appendSections(Section.allCases)
-            snapshot.appendItems(makePlaceholders(count: Page.Section.Top.numberOfItems), toSection: Section.top)
-            snapshot.appendItems(makePlaceholders(count: Page.Section.Middle.numberOfItems), toSection: Section.middle)
-            snapshot.appendItems(makePlaceholders(count: Page.Section.Bottom.numberOfItems), toSection: Section.bottom)
+            snapshot.appendItems(makePlaceholders(count: PhotosPage.Section.Top.numberOfItems), toSection: Section.top)
+            snapshot.appendItems(makePlaceholders(count: PhotosPage.Section.Middle.numberOfItems), toSection: Section.middle)
+            snapshot.appendItems(makePlaceholders(count: PhotosPage.Section.Bottom.numberOfItems), toSection: Section.bottom)
             
         case let .loaded(page):
             snapshot.appendSections(Section.allCases)

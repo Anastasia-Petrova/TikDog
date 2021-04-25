@@ -39,7 +39,7 @@ extension BreedListResponse: Decodable {
 }
 
 struct BreedPhotosResponse: Decodable {
-    var page: Page//{ Page(photoURLs)! }
+    var page: PhotosPage//{ Page(photoURLs)! }
 //    let photoURLs: [URL]
     
     private enum CodingKeys: String, CodingKey {
@@ -48,13 +48,13 @@ struct BreedPhotosResponse: Decodable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        page = try Page.init(from: decoder)
+        page = try PhotosPage.init(from: decoder)
 //        page = try container.decode(Page.self, forKey: .message)
     }
 }
 
 extension BreedPhotosResponse {
-    init(page: Page) {
+    init(page: PhotosPage) {
         self.page = page
 //        photoURLs = page.items.map(\.url)
     }

@@ -1,104 +1,35 @@
 //
-//  DogAPIService.swift
+//  WebService+mocks.swift
 //  TikDog
 //
-//  Created by Anastasia Petrova on 20/04/2021.
+//  Created by Anastasia Petrova on 25/04/2021.
 //
 
 import Combine
 import Foundation
 
-struct DogAPIService {
-    var getBreedsList: () -> AnyPublisher<Result<BreedListResponse, WebError>, Never>
-    var getBreedPhotos: (Breed) -> AnyPublisher<Result<Page, WebError>, Never>
-}
-
-extension DogAPIService {
-    static func live(baseURL: URL) -> DogAPIService {
-        DogAPIService(
-            getBreedsList: {
-                get(request: Endpoint.breedList.getRequest(for: baseURL))
-            },
-            getBreedPhotos: { breed in
-                get(request: Endpoint.breedPhotos(breedName: breed.name).getRequest(for: baseURL))
-            }
-        )
-    }
-    
-    static let mockSuccess = DogAPIService(
+extension WebService {
+    static let mockSuccess = WebService(
         getBreedsList: {
             Just(.success(BreedListResponse.mock))
                 .eraseToAnyPublisher()
         },
         getBreedPhotos: { _ in
-            Future { fulfill in
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    fulfill(.success(.success(Page.mock)))
-//                }
-            }.eraseToAnyPublisher()
+            Just(.success(PhotosPage.mock))
+                .eraseToAnyPublisher()
         }
     )
     
-    static let mockFailure = DogAPIService(
-        getBreedsList: {
-            Just(.failure(WebError(
-                message: "Something went wrong. Try again.",
-                code: 400
-            ))).eraseToAnyPublisher()
-        },
-        getBreedPhotos: { _ in
-            Just(.failure(WebError(
-                message: "Something went wrong. Try again.",
-                code: 400
-            ))).eraseToAnyPublisher()
-        }
+    static let mockFailure = WebService(
+        getBreedsList: { genericError() },
+        getBreedPhotos: { _ in genericError() }
     )
-}
-
-extension DogAPIService {
-    static func get<T: Decodable>(
-        request: URLRequest,
-        session: URLSession = .shared,
-        decoder: JSONDecoder = JSONDecoder()
-    ) -> AnyPublisher<Result<T, WebError>, Never> {
-        session
-            .dataTaskPublisher(for: request)
-//            .delay(for: 4, scheduler: DispatchQueue.main)
-            .tryMap { output in
-                guard let response = output.response as? HTTPURLResponse else {
-                    throw WebError(
-                        message: "Something went wrong. Try again.",
-                        code: 0
-                    )
-                }
-                
-                switch response.statusCode {
-                case 200:
-                    return output.data
-                    
-                case 400...599:
-                    throw try decoder.decode(WebError.self, from: output.data)
-                    
-                default:
-                    throw WebError(
-                        message: "Something went wrong. Try again.",
-                        code: response.statusCode
-                    )
-                }
-            }
-            .decode(type: T.self, decoder: decoder)
-            .mapError(WebError.init)
-            .map(Result.success)
-            .catch { Just(.failure($0)) }
-            .eraseToAnyPublisher()
-    }
     
-    
-}
-
-extension WebError {
-    init(_ error: Swift.Error) {
-        self.init(message: error.localizedDescription, code: 0)
+    private static func genericError<T>() -> AnyPublisher<Result<T, WebError>, Never> {
+        Just(.failure(WebError(
+            message: "Something went wrong. Try again.",
+            code: 400
+        ))).eraseToAnyPublisher()
     }
 }
 
@@ -115,9 +46,9 @@ extension BreedListResponse {
     }()
 }
 
-extension Page {
-    static var mock: Page = {
-        Page(
+extension PhotosPage {
+    static var mock: PhotosPage = {
+        PhotosPage(
             topSection: .init(item: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_13742.jpg")!)),
             middleSection: .init(
                 leadingColumn: .init(
@@ -147,7 +78,7 @@ extension Page {
 extension BreedPhotosResponse {
     static var mock: BreedPhotosResponse = {
         BreedPhotosResponse(
-            page: Page(
+            page: PhotosPage(
                 topSection: .init(item: .init(url: URL(string: "https://images.dog.ceo/breeds/hound-afghan/n02088094_13742.jpg")!)),
                 middleSection: .init(
                     leadingColumn: .init(
@@ -173,15 +104,4 @@ extension BreedPhotosResponse {
             )
         )
     }()
-}
-
-enum Loadable<Content> {
-    case failed(WebError)
-    case loaded(Content)
-    case loading
-}
-
-struct WebError: Decodable, Swift.Error {
-    let message: String
-    let code: Int
 }

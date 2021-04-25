@@ -11,27 +11,16 @@ import UIKit
 final class ErrorMessageCell: UITableViewCell {
     static let identifier = String(describing: ErrorMessageCell.self)
     
-    lazy var retryButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.addTarget(self, action: #selector(retryButtonAction), for: .touchUpInside)
-        button.setTitle("Try again", for: .normal)
-        button.titleLabel?.font = .preferredFont(forTextStyle: .headline)
-        return button
-    }()
-    
-    var didTapRetryButton: (() -> Void)?
-    
-    @objc func retryButtonAction() {
-        didTapRetryButton?()
+    var didTapRetryButton: (() -> Void)? {
+        get {
+            errorView.didTapRetryButton
+        }
+        set {
+            errorView.didTapRetryButton = newValue
+        }
     }
     
-    let message: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        label.font = .preferredFont(forTextStyle: .headline)
-        return label
-    }()
+    let errorView = ErrorView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -43,12 +32,10 @@ final class ErrorMessageCell: UITableViewCell {
     }
     
     func setUp() {
-        let stackView = UIStackView(arrangedSubviews: [message, retryButton])
-        stackView.axis = .vertical
-        contentView.embedSubview(stackView, offset: 16)
+        contentView.embedSubview(errorView)
     }
     
     func setMessage(_ text: String) {
-        message.text = text
+        errorView.setMessage(text)
     }
 }

@@ -62,10 +62,15 @@ extension BreedCell {
         }
         
         func setUp() {
-            shimmerView.layer.cornerRadius = 5.0
+            shimmerView.layer.cornerRadius = 4.0
             shimmerView.layer.masksToBounds = true
             contentView.embedSubview(shimmerView, offset: BreedCell.offset)
-            NSLayoutConstraint.activate([shimmerView.heightAnchor.constraint(equalToConstant: calculateShimmerHeight())])
+            let heightConstraint = shimmerView.heightAnchor.constraint(equalToConstant: calculateShimmerHeight())
+            // UIView-Encapsulated-Layout-Height keeps breaking our height constraint, because it calculates
+            // it's encapsulated height with a fraction of a point e.g (56.5).
+            // No reason in fighting the framework, so we just yield to it with a lower priority.
+            heightConstraint.priority = .defaultHigh
+            NSLayoutConstraint.activate([heightConstraint])
         }
     }
 }

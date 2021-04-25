@@ -11,22 +11,22 @@ import UIKit
 final class BreedPhotosViewController: UICollectionViewController {
     lazy var dataSource = BreedPhotosDataSource(
         collectionView: collectionView,
-        getBreedPhotos: getBreedPhotos,
+        getBreedPhotos: breedPhotosPublisher,
         loadImage: loadImage,
         retryAction: { [weak self] in self?.fetchBreedPhotos() },
         setImage: { [weak self] in self?.setImage($0, indexPath: $1) }
     )
 
-    let getBreedPhotos: () -> AnyPublisher<Result<Page, WebError>, Never>
+    let breedPhotosPublisher: () -> AnyPublisher<Result<PhotosPage, WebError>, Never>
     let loadImage: (URL) -> AnyPublisher<UIImage?, Never>
     
     init(
-        getBreedPhotos: @escaping () -> AnyPublisher<Result<Page, WebError>, Never>,
+        breedPhotosPublisher: @escaping () -> AnyPublisher<Result<PhotosPage, WebError>, Never>,
         loadImage: @escaping (URL) -> AnyPublisher<UIImage?, Never>
     ) {
-        self.getBreedPhotos = getBreedPhotos
+        self.breedPhotosPublisher = breedPhotosPublisher
         self.loadImage = loadImage
-        super.init(collectionViewLayout: Page.layout)
+        super.init(collectionViewLayout: PhotosPage.layout)
     }
     
     required init?(coder: NSCoder) {

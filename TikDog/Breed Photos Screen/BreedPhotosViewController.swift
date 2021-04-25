@@ -18,9 +18,9 @@ final class BreedPhotosViewController: UICollectionViewController {
     lazy var dataSource: UICollectionViewDiffableDataSource<Section, Row> = {
         UICollectionViewDiffableDataSource<Section, Row>(collectionView: collectionView) {
             collectionView, indexPath, row -> UICollectionViewCell? in
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BreedPhotoCell.identifier, for: indexPath) as! BreedPhotoCell
             switch row {
             case let .item(item):
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BreedPhotoCell.identifier, for: indexPath) as! BreedPhotoCell
                 if let image = item.image {
                     cell.imageView.image = image
                 } else {
@@ -37,10 +37,12 @@ final class BreedPhotosViewController: UICollectionViewController {
                 return cell
                 
             case let .error(message):
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BreedPhotoCell.identifier, for: indexPath) as! BreedPhotoCell
                 return cell
                 
             case .placeholder:
-                cell.contentView.backgroundColor = .gray
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BreedPhotoPlaceholderCell.identifier, for: indexPath) as! BreedPhotoPlaceholderCell
+//                cell.shimmerView.startAnimating()
                 return cell
             }
         }
@@ -80,6 +82,8 @@ final class BreedPhotosViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(BreedPhotoCell.self, forCellWithReuseIdentifier: BreedPhotoCell.identifier)
+        collectionView.register(BreedPhotoPlaceholderCell.self, forCellWithReuseIdentifier: BreedPhotoPlaceholderCell.identifier)
+        
         collectionView.dataSource = dataSource
         collectionView.showsVerticalScrollIndicator = false
         applySnapshot()
@@ -123,6 +127,19 @@ final class BreedPhotosViewController: UICollectionViewController {
                     self?.state = .failed(error)
                 }
             }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if let placeholderCell = cell as? BreedPhotoPlaceholderCell {
+            placeholderCell.layoutIfNeeded()
+            placeholderCell.shimmerView.startAnimating()
+        }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if let placeholderCell = cell as? BreedPhotoPlaceholderCell {
+            placeholderCell.shimmerView.stopAnimating()
+        }
     }
 }
 

@@ -23,7 +23,7 @@ enum Endpoint {
     
     func getRequest(for baseURL: URL) -> URLRequest {
         var r = URLRequest(url: baseURL.appendingPathComponent(stringValue))
-        r.timeoutInterval = 5
+//        r.timeoutInterval = 5
         return r
     }
 }

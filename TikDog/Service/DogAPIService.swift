@@ -32,9 +32,9 @@ extension DogAPIService {
         },
         getBreedPhotos: { _ in
             Future { fulfill in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     fulfill(.success(.success(Page.mock)))
-                }
+//                }
             }.eraseToAnyPublisher()
 //            Just(.success(BreedPhotosResponse.mock))
 //                .eraseToAnyPublisher()
@@ -54,6 +54,7 @@ extension DogAPIService {
     ) -> AnyPublisher<Result<T, WebError>, Never> {
         session
             .dataTaskPublisher(for: request)
+//            .delay(for: 4, scheduler: DispatchQueue.main)
             .tryMap { output in
                 guard let response = output.response as? HTTPURLResponse else {
                     throw WebError(

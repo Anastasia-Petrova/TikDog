@@ -27,6 +27,7 @@
 		6D75EF9B263398E6003D09F3 /* BreedPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D75EF9A263398E6003D09F3 /* BreedPhotoCell.swift */; };
 		6D75EFA0263398FE003D09F3 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D75EF9F263398FE003D09F3 /* Section.swift */; };
 		6D75EFA5263399C9003D09F3 /* BreedPhotosDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D75EFA4263399C9003D09F3 /* BreedPhotosDataSource.swift */; };
+		6D75EFAA2634A0F0003D09F3 /* BreedPhotoPlaceholderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D75EFA92634A0F0003D09F3 /* BreedPhotoPlaceholderCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		6D75EF9A263398E6003D09F3 /* BreedPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotoCell.swift; sourceTree = "<group>"; };
 		6D75EF9F263398FE003D09F3 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		6D75EFA4263399C9003D09F3 /* BreedPhotosDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotosDataSource.swift; sourceTree = "<group>"; };
+		6D75EFA92634A0F0003D09F3 /* BreedPhotoPlaceholderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotoPlaceholderCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,6 +182,7 @@
 				6D26836C262F8152007591E2 /* BreedPhotosViewController.swift */,
 				6D75EFA4263399C9003D09F3 /* BreedPhotosDataSource.swift */,
 				6D75EF9A263398E6003D09F3 /* BreedPhotoCell.swift */,
+				6D75EFA92634A0F0003D09F3 /* BreedPhotoPlaceholderCell.swift */,
 				6D75EF9F263398FE003D09F3 /* Section.swift */,
 			);
 			path = "Breed Photos Screen";
@@ -334,6 +337,7 @@
 				6D404F2D2630A7D300ED67CF /* BreedCell.swift in Sources */,
 				6D26832A262F7E35007591E2 /* AppDelegate.swift in Sources */,
 				6D26832C262F7E35007591E2 /* SceneDelegate.swift in Sources */,
+				6D75EFAA2634A0F0003D09F3 /* BreedPhotoPlaceholderCell.swift in Sources */,
 				6D404F432630E24500ED67CF /* ErrorMessageCell.swift in Sources */,
 				6D404F372630E11B00ED67CF /* App.swift in Sources */,
 				6D404F282630A7B800ED67CF /* BreedPlaceholderCell.swift in Sources */,

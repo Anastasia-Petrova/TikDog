@@ -39,64 +39,33 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "23F5106D-324B-4B54-9BBA-04E2318D0BF9"
+            uuid = "5425F0EE-9682-4F7C-BF56-254FE3FAA013"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TikDog/Service/DogAPIService.swift"
+            filePath = "TikDog/Breed Photos Screen/BreedPhotosViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
-            landmarkName = "get(request:session:decoder:)"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "dataSource"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ABFA3533-1437-46B1-A63C-304D522B5624"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TikDog/Breed Photos Screen/BreedPhotoPlaceholderCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "setUp()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "23F5106D-324B-4B54-9BBA-04E2318D0BF9 - 6ec757adbb104a35"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 ((data: Foundation.Data, response: __C.NSURLResponse)) throws -&gt; Foundation.Data in static TikDog.DogAPIService.get&lt;A where A: Swift.Decodable&gt;(request: Foundation.URLRequest, session: __C.NSURLSession, decoder: Foundation.JSONDecoder) -&gt; Combine.AnyPublisher&lt;Swift.Result&lt;A, TikDog.WebError&gt;, Swift.Never&gt;"
-                  moduleName = "TikDog"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/anastasiapetrova/Documents/Projects/TikDog/TikDog/Service/DogAPIService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "65"
-                  endingLineNumber = "65"
-                  offsetFromSymbolStart = "548">
-               </Location>
-               <Location
-                  uuid = "23F5106D-324B-4B54-9BBA-04E2318D0BF9 - 6ec757adbb104a35"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 ((data: Foundation.Data, response: __C.NSURLResponse)) throws -&gt; Foundation.Data in static TikDog.DogAPIService.get&lt;A where A: Swift.Decodable&gt;(request: Foundation.URLRequest, session: __C.NSURLSession, decoder: Foundation.JSONDecoder) -&gt; Combine.AnyPublisher&lt;Swift.Result&lt;A, TikDog.WebError&gt;, Swift.Never&gt;"
-                  moduleName = "TikDog"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/anastasiapetrova/Documents/Projects/TikDog/TikDog/Service/DogAPIService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "65"
-                  endingLineNumber = "65"
-                  offsetFromSymbolStart = "570">
-               </Location>
-               <Location
-                  uuid = "23F5106D-324B-4B54-9BBA-04E2318D0BF9 - 6ec757adbb104a35"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 ((data: Foundation.Data, response: __C.NSURLResponse)) throws -&gt; Foundation.Data in static TikDog.DogAPIService.get&lt;A where A: Swift.Decodable&gt;(request: Foundation.URLRequest, session: __C.NSURLSession, decoder: Foundation.JSONDecoder) -&gt; Combine.AnyPublisher&lt;Swift.Result&lt;A, TikDog.WebError&gt;, Swift.Never&gt;"
-                  moduleName = "TikDog"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/anastasiapetrova/Documents/Projects/TikDog/TikDog/Service/DogAPIService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "65"
-                  endingLineNumber = "65"
-                  offsetFromSymbolStart = "696">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

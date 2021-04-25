@@ -8,12 +8,6 @@
 import Combine
 import UIKit
 
-protocol TableDataSource: AnyObject, UITableViewDataSource {
-    func fetch()
-    func getBreed(at indexPath: IndexPath) -> Breed?
-    var state: Loadable<[Breed]> { get set }
-}
-
 final class BreedListDataSource: NSObject, UITableViewDataSource, TableDataSource {
     var state: Loadable<[Breed]> {
         didSet {
@@ -22,18 +16,18 @@ final class BreedListDataSource: NSObject, UITableViewDataSource, TableDataSourc
     }
     let retryAction: () -> Void
     let tableView: UITableView
-    let breedListPublisher: () -> AnyPublisher<Result<BreedListResponse, WebError>, Never>
-    var subscription: AnyCancellable?
+    let breedsListPublisher: () -> AnyPublisher<Result<BreedListResponse, WebError>, Never>
+    var breedsListRequestSubscription: AnyCancellable?
     
     init(
         initialState: Loadable<[Breed]>,
         tableView: UITableView,
-        breedListPublisher: @escaping () -> AnyPublisher<Result<BreedListResponse, WebError>, Never>,
+        breedsListPublisher: @escaping () -> AnyPublisher<Result<BreedListResponse, WebError>, Never>,
         retryAction: @escaping () -> Void
     ) {
         self.state = initialState
         self.tableView = tableView
-        self.breedListPublisher = breedListPublisher
+        self.breedsListPublisher = breedsListPublisher
         self.retryAction = retryAction
         super.init()
     }
@@ -54,25 +48,36 @@ final class BreedListDataSource: NSObject, UITableViewDataSource, TableDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch state {
         case let .failed(error):
-            let cell = tableView.dequeueReusableCell(withIdentifier: ErrorMessageCell.identifier, for: indexPath) as! ErrorMessageCell
-            cell.setMessage(error.message)
-            cell.didTapRetryButton = retryAction
-            return cell
+            return makeErrorMessageCell(tableView, indexPath: indexPath, error: error)
             
         case .loading:
-            return tableView.dequeueReusableCell(withIdentifier: BreedCell.Placeholder.identifier) as! BreedCell.Placeholder
+            return makePlaceholerCell(tableView)
             
         case let .loaded(breeds):
-            let breed = breeds[indexPath.row]
-            let cell = tableView.dequeueReusableCell(withIdentifier: BreedCell.identifier, for: indexPath) as! BreedCell
-            cell.setBreed(breed)
-            return cell
+            return makeBreedCell(tableView, indexPath: indexPath, breed: breeds[indexPath.row])
         }
+    }
+    
+    func makeErrorMessageCell(_ tableView: UITableView, indexPath: IndexPath, error: WebError) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ErrorMessageCell.identifier, for: indexPath) as! ErrorMessageCell
+        cell.setMessage(error.message)
+        cell.didTapRetryButton = retryAction
+        return cell
+    }
+    
+    func makePlaceholerCell(_ tableView: UITableView) -> UITableViewCell {
+        return tableView.dequeueReusableCell(withIdentifier: BreedCell.Placeholder.identifier) as! BreedCell.Placeholder
+    }
+    
+    func makeBreedCell(_ tableView: UITableView, indexPath: IndexPath, breed: Breed) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: BreedCell.identifier, for: indexPath) as! BreedCell
+        cell.setBreed(breed)
+        return cell
     }
     
     func fetch() {
         state = .loading
-        subscription = breedListPublisher()
+        breedsListRequestSubscription = breedsListPublisher()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 switch result {

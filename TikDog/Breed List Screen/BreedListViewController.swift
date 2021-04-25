@@ -8,12 +8,18 @@
 import Combine
 import UIKit
 
+protocol TableDataSource: AnyObject, UITableViewDataSource {
+    func fetch()
+    func getBreed(at indexPath: IndexPath) -> Breed?
+    var state: Loadable<[Breed]> { get set }
+}
+
 final class BreedListViewController: UITableViewController {
     lazy var dataSource: TableDataSource = BreedListDataSource(
         initialState: .loading,
         tableView: tableView,
-        breedListPublisher: breedListPublisher,
-        retryAction: fetchBreedList
+        breedsListPublisher: breedListPublisher,
+        retryAction: { [weak self] in self?.fetchBreedList() }
     )
     let breedListPublisher: () -> AnyPublisher<Result<BreedListResponse, WebError>, Never>
     let didSelectBreed: (Breed) -> Void
@@ -41,7 +47,7 @@ final class BreedListViewController: UITableViewController {
         fetchBreedList()
     }
     
-    func fetchBreedList() {
+    private func fetchBreedList() {
         dataSource.fetch()
     }
 }

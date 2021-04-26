@@ -14,7 +14,6 @@
 		6D268333262F7E35007591E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D268332262F7E35007591E2 /* Assets.xcassets */; };
 		6D268336262F7E35007591E2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6D268334262F7E35007591E2 /* LaunchScreen.storyboard */; };
 		6D268363262F80C0007591E2 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D268362262F80C0007591E2 /* WebService.swift */; };
-		6D268368262F80CD007591E2 /* DogAPIServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D268367262F80CD007591E2 /* DogAPIServiceTests.swift */; };
 		6D26836D262F8152007591E2 /* BreedPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D26836C262F8152007591E2 /* BreedPhotosViewController.swift */; };
 		6D404F2D2630A7D300ED67CF /* BreedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D404F2C2630A7D300ED67CF /* BreedCell.swift */; };
 		6D404F372630E11B00ED67CF /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D404F362630E11B00ED67CF /* App.swift */; };
@@ -29,6 +28,7 @@
 		6D9163D82635D48E00A957F3 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9163D72635D48E00A957F3 /* ErrorView.swift */; };
 		6D9163E12635D4EB00A957F3 /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9163E02635D4EB00A957F3 /* Loadable.swift */; };
 		6DA918522635D52F00810234 /* WebService+mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA918512635D52F00810234 /* WebService+mocks.swift */; };
+		6DE7CFFC2636B88900BCB0C4 /* WebServiceUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE7CFFB2636B88900BCB0C4 /* WebServiceUnitTests.swift */; };
 		6DFE7FF32635E8DF00FA95F1 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE7FF22635E8DF00FA95F1 /* AppTests.swift */; };
 		6DFE7FFD2635EE2A00FA95F1 /* BreedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE7FFC2635EE2A00FA95F1 /* BreedTests.swift */; };
 		6DFE80052635EED800FA95F1 /* BreedListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFE80042635EED800FA95F1 /* BreedListResponse.swift */; };
@@ -81,7 +81,6 @@
 		6D26833C262F7E36007591E2 /* TikDogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TikDogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D268342262F7E36007591E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6D268362262F80C0007591E2 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
-		6D268367262F80CD007591E2 /* DogAPIServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogAPIServiceTests.swift; sourceTree = "<group>"; };
 		6D26836C262F8152007591E2 /* BreedPhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedPhotosViewController.swift; sourceTree = "<group>"; };
 		6D404F2C2630A7D300ED67CF /* BreedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedCell.swift; sourceTree = "<group>"; };
 		6D404F362630E11B00ED67CF /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
@@ -96,6 +95,7 @@
 		6D9163D72635D48E00A957F3 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		6D9163E02635D4EB00A957F3 /* Loadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadable.swift; sourceTree = "<group>"; };
 		6DA918512635D52F00810234 /* WebService+mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebService+mocks.swift"; sourceTree = "<group>"; };
+		6DE7CFFB2636B88900BCB0C4 /* WebServiceUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceUnitTests.swift; sourceTree = "<group>"; };
 		6DFE7FF22635E8DF00FA95F1 /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
 		6DFE7FFC2635EE2A00FA95F1 /* BreedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedTests.swift; sourceTree = "<group>"; };
 		6DFE80042635EED800FA95F1 /* BreedListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedListResponse.swift; sourceTree = "<group>"; };
@@ -186,11 +186,11 @@
 			isa = PBXGroup;
 			children = (
 				6DFE7FFA2635EE1300FA95F1 /* App */,
+				6DE7CFFA2636B87600BCB0C4 /* Services */,
 				6DFE7FFB2635EE1B00FA95F1 /* Shared Models */,
 				6DFE80212635F6A700FA95F1 /* Shared Views */,
 				6DFE802A2635FA4400FA95F1 /* Breed List Screen */,
 				6DFE804426360C7000FA95F1 /* Breed Photos Screen */,
-				6D268367262F80CD007591E2 /* DogAPIServiceTests.swift */,
 				6D268342262F7E36007591E2 /* Info.plist */,
 			);
 			path = TikDogTests;
@@ -273,6 +273,14 @@
 				6D9163E02635D4EB00A957F3 /* Loadable.swift */,
 			);
 			path = "Shared Models";
+			sourceTree = "<group>";
+		};
+		6DE7CFFA2636B87600BCB0C4 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				6DE7CFFB2636B88900BCB0C4 /* WebServiceUnitTests.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		6DFE7FFA2635EE1300FA95F1 /* App */ = {
@@ -527,11 +535,11 @@
 				6DFE7FFD2635EE2A00FA95F1 /* BreedTests.swift in Sources */,
 				6DFE804726360C8100FA95F1 /* BreedPhotoErrorCellTests.swift in Sources */,
 				6DFE803A2635FB8200FA95F1 /* BreedListViewControllerTests.swift in Sources */,
-				6D268368262F80CD007591E2 /* DogAPIServiceTests.swift in Sources */,
 				6DFE802D2635FA5900FA95F1 /* BreedCellTests.swift in Sources */,
 				6DFE805526360EB700FA95F1 /* BreedPhotosViewControllerTests.swift in Sources */,
 				6DFE80352635FACD00FA95F1 /* ErrorMessageCellTests.swift in Sources */,
 				6DFE801D2635F1C300FA95F1 /* ShimmerViewTests.swift in Sources */,
+				6DE7CFFC2636B88900BCB0C4 /* WebServiceUnitTests.swift in Sources */,
 				6DFE80232635F6D900FA95F1 /* ErrorViewTests.swift in Sources */,
 				6DFE7FF32635E8DF00FA95F1 /* AppTests.swift in Sources */,
 			);

@@ -15,7 +15,6 @@ UI:
 Built completely in code to avoid undesirable explosion of Optional properties that comes with
 Interface Builder approach. All View Controller dependencies are passed to inits, which significantly improves type safety and testability.
 
-
 Breeds List is a simple table view.
 Breed Photos is a pretty advanced Instagram style collection view. Uses diffable data source.
 
@@ -25,7 +24,6 @@ Shimmers also respect Dynamic Fonts.
 
 Dependencies:
 Snapshot testing library - https://github.com/pointfreeco/swift-snapshot-testing.git
-
 
 Error Handling:
 Both screens have error states and support Retry functionality.

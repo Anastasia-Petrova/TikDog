@@ -20,19 +20,16 @@ extension WebService {
                 get(request: Endpoint.breedList.getRequest(for: baseURL))
             },
             getBreedPhotos: { breed in
-                get(request: Endpoint.breedPhotos(breedName: breed.identifier).getRequest(for: baseURL))
+                get(request: Endpoint.breedPhotos(breedIdentifier: breed.identifier).getRequest(for: baseURL))
             }
         )
     }
 }
 
 extension WebService {
-    static func get<T: Decodable>(
-        request: URLRequest,
-        session: URLSession = .shared,
-        decoder: JSONDecoder = JSONDecoder()
-    ) -> AnyPublisher<Result<T, WebError>, Never> {
-        session
+    static func get<T: Decodable>(request: URLRequest) -> AnyPublisher<Result<T, WebError>, Never> {
+        let decoder = JSONDecoder()
+        return URLSession.shared
             .dataTaskPublisher(for: request)
 //            Uncomment to experience shimmer effect. Use bad network conditioner otherwise.
 //            .delay(for: 4, scheduler: DispatchQueue.main)
@@ -79,15 +76,15 @@ struct WebError: Decodable, Swift.Error, Equatable {
 
 enum Endpoint {
     case breedList
-    case breedPhotos(breedName: String)
+    case breedPhotos(breedIdentifier: String)
     
     var stringValue: String {
         switch self {
         case .breedList:
             return "breeds/list/all"
             
-        case let .breedPhotos(breedName):
-            return "/breed/\(breedName)/images/random/10"
+        case let .breedPhotos(breedIdentifier):
+            return "/breed/\(breedIdentifier)/images/random/10"
         }
     }
     

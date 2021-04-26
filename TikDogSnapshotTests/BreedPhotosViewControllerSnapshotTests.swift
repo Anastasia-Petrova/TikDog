@@ -44,7 +44,7 @@ final class BreedPhotosViewControllerSnapshotTests: XCTestCase {
             loadImage: ImageLoader.mock.load
         )
         vc.loadViewIfNeeded()
-        vc.dataSource.state = .failed(WebError(message: "Bad bard error", code: 400))
+        vc.dataSource.state = .failed(WebError(message: "Bad bard error"))
         vc.collectionView.reloadData()
         assertSnapshot(matching: vc, as: .image)
     }

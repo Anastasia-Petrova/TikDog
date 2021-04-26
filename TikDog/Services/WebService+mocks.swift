@@ -26,10 +26,7 @@ extension WebService {
     )
     
     private static func genericError<T>() -> AnyPublisher<Result<T, WebError>, Never> {
-        Just(.failure(WebError(
-            message: "Something went wrong. Try again.",
-            code: 400
-        ))).eraseToAnyPublisher()
+        Just(.failure(WebError.unknownError)).eraseToAnyPublisher()
     }
 }
 

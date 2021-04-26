@@ -35,10 +35,7 @@ extension WebService {
 //            .delay(for: 4, scheduler: DispatchQueue.main)
             .tryMap { output in
                 guard let response = output.response as? HTTPURLResponse else {
-                    throw WebError(
-                        message: "Something went wrong. Try again.",
-                        code: 0
-                    )
+                    throw WebError.unknownError
                 }
                 
                 switch response.statusCode {
@@ -49,10 +46,7 @@ extension WebService {
                     throw try decoder.decode(WebError.self, from: output.data)
                     
                 default:
-                    throw WebError(
-                        message: "Something went wrong. Try again.",
-                        code: response.statusCode
-                    )
+                    throw WebError.unknownError
                 }
             }
             .decode(type: T.self, decoder: decoder)
@@ -65,13 +59,14 @@ extension WebService {
 
 extension WebError {
     init(_ error: Swift.Error) {
-        self.init(message: error.localizedDescription, code: 0)
+        self.init(message: error.localizedDescription)
     }
+    
+    static let unknownError = WebError(message: "Something went wrong. Try again.")
 }
 
 struct WebError: Decodable, Swift.Error, Equatable {
     let message: String
-    let code: Int
 }
 
 enum Endpoint {

@@ -40,7 +40,7 @@ final class BreedListViewControllerSnapshotTests: XCTestCase {
             didSelectBreed: { _ in }
         )
         vc.loadViewIfNeeded()
-        vc.dataSource.state = .failed(WebError(message: "Bad bard error", code: 400))
+        vc.dataSource.state = .failed(WebError(message: "Bad bard error"))
         vc.view.frame = CGRect(origin: .zero, size: CGSize(width: 375, height: 667))
         assertSnapshot(matching: vc, as: .image)
     }

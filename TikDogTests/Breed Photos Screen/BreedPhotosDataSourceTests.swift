@@ -16,7 +16,7 @@ final class BreedPhotosDataSourceTests: XCTestCase {
     func test_fetch_setsStateToLoading_andMakesRequest() {
         var counter = 0
         let dataSource = makeDataSource(
-            initialState: .failed(WebError(message: "", code: 0)),
+            initialState: .failed(WebError(message: "")),
             getBreedPhotos: {
                 counter += 1
                 return WebService.mockSuccess.getBreedPhotos(Breed(identifier: "pug"))
@@ -32,7 +32,7 @@ final class BreedPhotosDataSourceTests: XCTestCase {
     
     func test_updateScrollingState() {
         let dataSource = makeDataSource()
-        dataSource.state = .failed(WebError(message: "", code: 0))
+        dataSource.state = .failed(WebError(message: ""))
         dataSource.updateScrollingState()
         XCTAssertFalse(dataSource.collectionView.isScrollEnabled)
         
@@ -112,7 +112,7 @@ final class BreedPhotosDataSourceTests: XCTestCase {
     }
     
     func test_getSnapshot_whenFailed() {
-        let snapshot = BreedPhotosDataSource.getSnapshot(for: .failed(WebError(message: "Bad error", code: 1)))
+        let snapshot = BreedPhotosDataSource.getSnapshot(for: .failed(WebError(message: "Bad error")))
         
         XCTAssertEqual(snapshot.sectionIdentifiers, [Section.top])
         XCTAssertEqual(snapshot.itemIdentifiers(inSection: .top), [Row.error("Bad error")])

@@ -12,7 +12,7 @@ import XCTest
 final class BreedListDataSourceTests: XCTestCase {
     func test_numberOfRowsInSection() {
         let dataSource = makeDataSource()
-        dataSource.state = .failed(WebError(message: "", code: 0))
+        dataSource.state = .failed(WebError(message: ""))
         XCTAssertEqual(dataSource.tableView(UITableView(), numberOfRowsInSection: 0), 1)
         
         dataSource.state = .loading
@@ -27,7 +27,7 @@ final class BreedListDataSourceTests: XCTestCase {
             return dataSource.tableView(dataSource.tableView, cellForRowAt: IndexPath(row: 0, section: 0))
         }
         let dataSource = makeDataSource()
-        dataSource.state = .failed(WebError(message: "", code: 0))
+        dataSource.state = .failed(WebError(message: ""))
         XCTAssertTrue(getCell() is ErrorMessageCell)
         
         dataSource.state = .loading
@@ -40,7 +40,7 @@ final class BreedListDataSourceTests: XCTestCase {
     func test_fetch_setsStateToLoading_andMakesRequest() {
         var counter = 0
         let dataSource = makeDataSource(
-            initialState: .failed(WebError(message: "", code: 0)),
+            initialState: .failed(WebError(message: "")),
             breedsListPublisher: {
                 counter += 1
                 return WebService.mockSuccess.getBreedsList()
@@ -56,7 +56,7 @@ final class BreedListDataSourceTests: XCTestCase {
     
     func test_getBreed() {
         let dataSource = makeDataSource()
-        dataSource.state = .failed(WebError(message: "", code: 0))
+        dataSource.state = .failed(WebError(message: ""))
         XCTAssertNil(dataSource.getBreed(at: IndexPath(row: 0, section: 0)))
         
         dataSource.state = .loading
@@ -68,7 +68,7 @@ final class BreedListDataSourceTests: XCTestCase {
     
     func test_update() {
         let dataSource = makeDataSource()
-        dataSource.state = .failed(WebError(message: "", code: 0))
+        dataSource.state = .failed(WebError(message: ""))
         dataSource.update()
         XCTAssertFalse(dataSource.tableView.allowsSelection)
         XCTAssertFalse(dataSource.tableView.isScrollEnabled)

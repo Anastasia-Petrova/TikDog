@@ -90,3 +90,82 @@ enum Endpoint {
         return request
     }
 }
+
+protocol WebServiceProtocol {
+    func getBreedsList() -> AnyPublisher<Result<BreedListResponse, WebError>, Never>
+    func getBreedPhotos(breed: Breed) -> AnyPublisher<Result<PhotoPage, WebError>, Never>
+}
+
+struct WebServiceLive: WebServiceProtocol {
+    let baseURL: URL
+    
+    func getBreedsList() -> AnyPublisher<Result<BreedListResponse, WebError>, Never> {
+        WebService.get(request: Endpoint.breedList.getRequest(for: baseURL))
+    }
+    
+    func getBreedPhotos(breed: Breed) -> AnyPublisher<Result<PhotoPage, WebError>, Never> {
+        WebService.get(request: Endpoint.breedPhotos(breedIdentifier: breed.identifier).getRequest(for: baseURL))
+    }
+}
+
+struct WebServiceMockSuccess: WebServiceProtocol {
+    func getBreedsList() -> AnyPublisher<Result<BreedListResponse, WebError>, Never> {
+        Just(.success(BreedListResponse.mock))
+            .eraseToAnyPublisher()
+    }
+    
+    func getBreedPhotos(breed: Breed) -> AnyPublisher<Result<PhotoPage, WebError>, Never> {
+        Just(.success(PhotoPage.mock()))
+            .eraseToAnyPublisher()
+    }
+}
+
+struct WebServiceMockFailure: WebServiceProtocol {
+    func getBreedsList() -> AnyPublisher<Result<BreedListResponse, WebError>, Never> {
+        Just(.failure(WebError.unknownError))
+            .eraseToAnyPublisher()
+    }
+    
+    func getBreedPhotos(breed: Breed) -> AnyPublisher<Result<PhotoPage, WebError>, Never> {
+        Just(.failure(WebError.unknownError))
+            .eraseToAnyPublisher()
+    }
+}
+
+struct WebServiceMockSuccessFailure1: WebServiceProtocol {
+    func getBreedsList() -> AnyPublisher<Result<BreedListResponse, WebError>, Never> {
+        Just(.success(BreedListResponse.mock))
+            .eraseToAnyPublisher()
+    }
+    
+    func getBreedPhotos(breed: Breed) -> AnyPublisher<Result<PhotoPage, WebError>, Never> {
+        Just(.failure(WebError.unknownError))
+            .eraseToAnyPublisher()
+    }
+}
+
+struct WebServiceMockSuccessFailure2: WebServiceProtocol {
+    func getBreedsList() -> AnyPublisher<Result<BreedListResponse, WebError>, Never> {
+        Just(.failure(WebError.unknownError))
+            .eraseToAnyPublisher()
+    }
+    
+    func getBreedPhotos(breed: Breed) -> AnyPublisher<Result<PhotoPage, WebError>, Never> {
+        Just(.success(PhotoPage.mock()))
+            .eraseToAnyPublisher()
+    }
+}
+
+class VC {
+    let service: WebServiceProtocol
+    
+    init(service: WebServiceProtocol) {
+        self.service = service
+    }
+}
+
+
+let mockSuccess = WebServiceMockSuccess()
+let mockFailure = WebServiceMockFailure()
+
+let vc = VC(service: mockSuccess)

@@ -60,7 +60,7 @@ final class BreedPhotosDataSourceTests: XCTestCase {
     }
     
     func test_getSnapshot_whenLoading() {
-        let str = "E621E1F8-C36C-495A-93FC-0C247A3E6E5"
+        let str = "DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFDEA"
         var counter: NSNumber = 0
         let mockUUID: () -> UUID = {
             let uuidString = str + "\(counter.intValue)"
@@ -97,8 +97,8 @@ final class BreedPhotosDataSourceTests: XCTestCase {
     }
     
     func test_getSnapshot_whenLoaded() {
-        let snapshot = BreedPhotosDataSource.getSnapshot(for: .loaded(PhotoPage.mock()))
         let mockPhotoPage = PhotoPage.mock()
+        let snapshot = BreedPhotosDataSource.getSnapshot(for: .loaded(mockPhotoPage))
         XCTAssertEqual(snapshot.sectionIdentifiers, Section.allCases)
         XCTAssertEqual(snapshot.itemIdentifiers(inSection: .top), [Row.item(mockPhotoPage.topItem)])
         XCTAssertEqual(

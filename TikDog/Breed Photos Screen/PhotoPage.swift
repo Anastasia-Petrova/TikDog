@@ -91,6 +91,7 @@ extension PhotoPage {
 }
 
 struct PhotoItem: Hashable {
+    //TODO: it's a good idea to use UUID to prevent crash for items with same URLs
     let url: URL
     var image: UIImage?
 }

@@ -9,7 +9,7 @@
 import XCTest
 
 final class ErrorViewTests: XCTestCase {
-    func test_retryButton_action() throws {
+    func test_retryButton_action() {
         let view = ErrorView()
         var counter = 0
         view.didTapRetryButton = {

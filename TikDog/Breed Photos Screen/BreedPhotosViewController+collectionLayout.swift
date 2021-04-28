@@ -45,7 +45,7 @@ extension BreedPhotosViewController {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0/3.0)
+                heightDimension: .fractionalHeight(1.0/2.0)
             )
         )
         let verticalGroup = NSCollectionLayoutGroup.vertical(
@@ -77,7 +77,7 @@ extension BreedPhotosViewController {
         let trailingItem = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0/3.0)
+                heightDimension: .fractionalHeight(1.0/2.0)
             )
         )
         let trailingGroup = NSCollectionLayoutGroup.vertical(

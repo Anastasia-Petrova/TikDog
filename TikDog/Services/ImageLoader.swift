@@ -13,18 +13,21 @@ struct ImageLoader {
     let load: (URL) -> AnyPublisher<UIImage?, Never>
 }
 
+private let imageLoadingQueue: OperationQueue = {
+    let imageLoadingQueue = OperationQueue()
+    imageLoadingQueue.maxConcurrentOperationCount = 3
+    return imageLoadingQueue
+}()
+
 extension ImageLoader {
-    static let live = ImageLoader { url in
-        let imageLoadingQueue = OperationQueue()
-        imageLoadingQueue.maxConcurrentOperationCount = 3
-        
+    static let live = ImageLoader(load: { url in
         return URLSession.shared
             .dataTaskPublisher(for: url)
             .subscribe(on: imageLoadingQueue)
             .map { UIImage(data: $0.data) }
             .replaceError(with: nil)
             .eraseToAnyPublisher()
-    }
+    })
 }
 
 extension ImageLoader {

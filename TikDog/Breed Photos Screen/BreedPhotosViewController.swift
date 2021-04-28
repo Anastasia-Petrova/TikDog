@@ -58,7 +58,9 @@ final class BreedPhotosViewController: UICollectionViewController {
     func setImage(_ image: UIImage, indexPath: IndexPath) {
         dataSource.setImage(image, indexPath: indexPath)
     }
-    
+}
+
+extension BreedPhotosViewController {
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let placeholderCell = cell as? BreedPhotoCell.Placeholder {
             placeholderCell.shimmerView.startAnimating()

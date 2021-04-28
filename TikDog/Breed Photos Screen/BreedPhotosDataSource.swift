@@ -30,21 +30,24 @@ final class BreedPhotosDataSource: UICollectionViewDiffableDataSource<BreedPhoto
         collectionView.register(BreedPhotoCell.Placeholder.self, forCellWithReuseIdentifier: BreedPhotoCell.Placeholder.identifier)
         collectionView.register(BreedPhotoErrorCell.self, forCellWithReuseIdentifier: BreedPhotoErrorCell.identifier)
         
-        var subscriptions = Set<AnyCancellable>()
+        var subscriptions = Dictionary<URL, AnyCancellable>()
         super.init(collectionView: collectionView) { collectionView, indexPath, row -> UICollectionViewCell? in
             switch row {
             case let .item(item):
                 if let image = item.image {
                     return Self.makePhotoCell(collectionView, indexPath: indexPath, image: image)
                 } else {
-                    loadImage(item.url)
-                        .receive(on: DispatchQueue.main)
-                        .sink { image in
-                            if let image = image {
-                                setImage(image, indexPath)
+                    if subscriptions[item.url] == nil {
+                        let subscription = loadImage(item.url)
+                            .receive(on: DispatchQueue.main)
+                            .sink { image in
+                                if let image = image {
+                                    setImage(image, indexPath)
+                                }
+                                subscriptions[item.url] = nil
                             }
-                        }
-                        .store(in: &subscriptions)
+                        subscriptions[item.url] = subscription
+                    }
                     
                     return Self.makePlaceholderCell(collectionView, indexPath: indexPath)
                 }

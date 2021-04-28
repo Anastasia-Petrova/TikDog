@@ -12,6 +12,7 @@ final class ErrorView: UIView {
         let button = UIButton(type: .system)
         button.addTarget(self, action: #selector(retryButtonAction), for: .touchUpInside)
         button.setTitle("Try again", for: .normal)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.titleLabel?.font = .preferredFont(forTextStyle: .headline)
         return button
     }()
@@ -26,6 +27,7 @@ final class ErrorView: UIView {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.adjustsFontForContentSizeCategory = true
         label.font = .preferredFont(forTextStyle: .headline)
         return label
     }()

@@ -1,3 +1,7 @@
+# Dog CEO iOS Client
+
+[![CircleCI](https://circleci.com/gh/Anastasia-Petrova/TikDog.svg?style=svg)](https://circleci.com/gh/Anastasia-Petrova/TikDog)
+
 ![Preview](https://i.imgur.com/ND8ZY99.gif)
 ![Preview2](https://i.imgur.com/XxWRK8u.gif)
 ![Preview3](https://i.imgur.com/ByNI6LT.gif)

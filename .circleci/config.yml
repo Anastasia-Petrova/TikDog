@@ -1,0 +1,22 @@
+version: 2.1
+jobs: 
+
+  build:
+
+    macos: 
+      xcode: 12.4.0
+    working_directory: /Users/distiller/project
+    steps: 
+      - checkout
+      - run: sudo defaults write com.apple.dt.Xcode IDEPackageSupportUseBuiltinSCM YES
+      - run: rm ~/.ssh/id_rsa || true
+      - run: for ip in $(dig @8.8.8.8 github.com +short); do ssh-keyscan github.com,$ip; ssh-keyscan $ip; done 2>/dev/null >> ~/.ssh/known_hosts || true
+      - run:
+          name: Run Unit Tests
+          command: xcodebuild test -scheme TikDog -destination 'platform=iOS Simulator,name=iPhone SE (2nd generation),OS=14.4'
+          environment:
+            SNAPSHOT_ARTIFACTS: /tmp/__SnapshotArtifacts__
+      - store_artifacts:
+          path: /tmp/__SnapshotArtifacts__
+      - store_test_results:
+          path: test_output

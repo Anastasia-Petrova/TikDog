@@ -1,3 +1,7 @@
+![Preview](https://i.imgur.com/x1ywl82.gif)
+![Preview2](https://i.imgur.com/LSqgAYS.gif)
+![Preview3](https://i.imgur.com/unHTZqy.gif)
+
 ### Environment:
 Xcode 12.4
 iOS 13+, but Snapshot tests have been recorded with iPhone SE (2nd generation) iOS 14.4.

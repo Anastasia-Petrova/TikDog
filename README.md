@@ -11,7 +11,7 @@ Xcode 12.4
 iOS 13+, but Snapshot tests have been recorded with iPhone SE (2nd generation) iOS 14.4.
 
 ### Application Architecture:
-No particular architectural patterns have been used, just a general approach to separation of concerns and testable dependency management. Big emphasis on type safety and testability. 
+Application is architected in a way to achieve proper separation of concerns and a testable dependency management. Big emphasis on type safety and testability. 
 All services have mocks and almost all business logic is tested.
 
 `App.swift` - application's flow coordination. Creates screens and presents them as needed. 

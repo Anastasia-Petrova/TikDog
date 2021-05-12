@@ -91,6 +91,16 @@ enum Endpoint {
     }
 }
 
+
+// ======================
+// This protocol and structs below serve as an example of how
+// Higher-order functions are superior to protocols for Dependency Injection
+// It demonstrates the combinatory explosion that happens if we want to build mocks
+// with various combinations of success and failure responses (e.g. for UI testing scenarios).
+// Whereas Higher-order functions allow to simply reassign values one-by-one as needed, without
+// the need to define new Mock type.
+// ======================
+
 protocol WebServiceProtocol {
     func getBreedsList() -> AnyPublisher<Result<BreedListResponse, WebError>, Never>
     func getBreedPhotos(breed: Breed) -> AnyPublisher<Result<PhotoPage, WebError>, Never>
